@@ -47,22 +47,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonOpenBracket"
                     style="@style/Operations"
                     android:text="("/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonCloseBracket"
                     style="@style/Operations"
                     android:text=")"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonClear"
                     style="@style/Operations"
+                    android:background="@color/red"
                     android:text="C" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonDivide"
                     style="@style/Operations"
                     android:text="/"/>
@@ -76,22 +77,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSeven"
                     style="@style/Operations"
                     android:text="7" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonEight"
                     style="@style/Operations"
                     android:text="8" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonNine"
                     style="@style/Operations"
                     android:text="9" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonMultiply"
                     style="@style/Operations"
                     android:text="*" />
@@ -105,22 +106,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonFour"
                     style="@style/Operations"
                     android:text="4" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonFive"
                     style="@style/Operations"
                     android:text="5"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSix"
                     style="@style/Operations"
                     android:text="6"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSubtract"
                     style="@style/Operations"
                     android:text="-"/>
@@ -133,22 +134,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonOne"
                     style="@style/Operations"
                     android:text="1"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonTwo"
                     style="@style/Operations"
                     android:text="2"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonThree"
                     android:text="3"
                     style="@style/Operations" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonAdd"
                     style="@style/Operations"
                     android:text="+"/>
@@ -161,17 +162,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonZero"
                     style="@style/Operations"
                     android:text="0"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonDot"
                     style="@style/Operations"
                     android:text="."/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonEqual"
                     style="@style/Operations"
                     android:text="="/>
