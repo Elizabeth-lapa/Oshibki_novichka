@@ -47,6 +47,35 @@
                 android:layout_height="0dp">
 
                 <Button
+                    android:id="@+id/buttonOpenBracket"
+                    style="@style/Operations"
+                    android:text="("/>
+
+                <Button
+                    android:id="@+id/buttonCloseBracket"
+                    style="@style/Operations"
+                    android:text=")"/>
+
+                <Button
+                    android:id="@+id/buttonClear"
+                    style="@style/Operations"
+                    android:text="C" />
+
+                <Button
+                    android:id="@+id/buttonDivide"
+                    style="@style/Operations"
+                    android:text="/"/>
+
+            </LinearLayout>
+
+<!--            second row-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <Button
                     android:id="@+id/buttonSeven"
                     style="@style/Operations"
                     android:text="7" />
@@ -62,16 +91,24 @@
                     android:text="9" />
 
                 <Button
-                    android:id="@+id/buttonFour"
+                    android:id="@+id/buttonMultiply"
                     style="@style/Operations"
-                    android:text="4" />
+                    android:text="*" />
+
 
             </LinearLayout>
+<!--            third row-->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
+
+                <Button
+                    android:id="@+id/buttonFour"
+                    style="@style/Operations"
+                    android:text="4" />
+
                 <Button
                     android:id="@+id/buttonFive"
                     style="@style/Operations"
@@ -83,6 +120,19 @@
                     android:text="6"/>
 
                 <Button
+                    android:id="@+id/buttonSubtract"
+                    style="@style/Operations"
+                    android:text="-"/>
+
+            </LinearLayout>
+<!--            fourth row-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <Button
                     android:id="@+id/buttonOne"
                     style="@style/Operations"
                     android:text="1"/>
@@ -92,21 +142,23 @@
                     style="@style/Operations"
                     android:text="2"/>
 
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp">
                 <Button
                     android:id="@+id/buttonThree"
                     android:text="3"
                     style="@style/Operations" />
 
                 <Button
-                    android:id="@+id/buttonDot"
+                    android:id="@+id/buttonAdd"
                     style="@style/Operations"
-                    android:text="."/>
+                    android:text="+"/>
+
+            </LinearLayout>
+<!--            fifth row-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
 
                 <Button
                     android:id="@+id/buttonZero"
@@ -114,34 +166,16 @@
                     android:text="0"/>
 
                 <Button
+                    android:id="@+id/buttonDot"
+                    style="@style/Operations"
+                    android:text="."/>
+
+                <Button
                     android:id="@+id/buttonEqual"
                     style="@style/Operations"
                     android:text="="/>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp">
-                <Button
-                    android:id="@+id/buttonDivide"
-                    style="@style/Operations"
-                    android:text="/"/>
 
-                <Button
-                    android:id="@+id/buttonMultiply"
-                    style="@style/Operations"
-                    android:text="*" />
 
-                <Button
-                    android:id="@+id/buttonSubtract"
-                    style="@style/Operations"
-                    android:text="-"/>
-
-                <Button
-                    android:id="@+id/buttonAdd"
-                    style="@style/Operations"
-                    android:text="+"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
