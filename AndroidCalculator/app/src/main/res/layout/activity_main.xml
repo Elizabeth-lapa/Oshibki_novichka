@@ -2,13 +2,14 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.sample.foo.samplecalculator.MainActivity"
+        android:background="#9A9A9A"
         android:orientation="vertical"
-        android:background="@color/black">
+        tools:context="com.sample.foo.samplecalculator.MainActivity">
 
         <!-- Белый цвет текста -->
         <!-- Текст в 1 строку -->
@@ -18,6 +19,7 @@
             android:id="@+id/infoTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:ellipsize="start"
             android:singleLine="true"
             android:textColor="@color/white"
@@ -28,10 +30,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/infoTextView"
+            android:layout_marginTop="0.7dp"
+            android:background="@color/white"
             android:enabled="false"
             android:gravity="bottom"
             android:lines="2"
             android:maxLines="2"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
 
@@ -39,43 +44,50 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@color/black"
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="0.3dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonVectorOpen"
+                    style="@style/Operations"
+                    android:text="{" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonVectorClose"
+                    style="@style/Operations"
+                    android:text="}" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonOpenBracket"
                     style="@style/Operations"
-                    android:text="("/>
+                    android:text="(" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonCloseBracket"
                     style="@style/Operations"
-                    android:text=")"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonClear"
-                    style="@style/Operations"
-                    android:background="@color/red"
-                    android:text="C" />
+                    android:text=")" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonDivide"
                     style="@style/Operations"
-                    android:text="/"/>
+                    android:text="/" />
 
             </LinearLayout>
 
-<!--            second row-->
+            <!--            second row-->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSeven"
@@ -99,12 +111,13 @@
 
 
             </LinearLayout>
-<!--            third row-->
+            <!--            third row-->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonFour"
@@ -114,68 +127,75 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonFive"
                     style="@style/Operations"
-                    android:text="5"/>
+                    android:text="5" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSix"
                     style="@style/Operations"
-                    android:text="6"/>
+                    android:text="6" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonSubtract"
                     style="@style/Operations"
-                    android:text="-"/>
+                    android:text="-" />
 
             </LinearLayout>
-<!--            fourth row-->
+            <!--            fourth row-->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonOne"
                     style="@style/Operations"
-                    android:text="1"/>
+                    android:text="1" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonTwo"
                     style="@style/Operations"
-                    android:text="2"/>
+                    android:text="2" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonThree"
-                    android:text="3"
-                    style="@style/Operations" />
+                    style="@style/Operations"
+                    android:text="3" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonAdd"
                     style="@style/Operations"
-                    android:text="+"/>
+                    android:text="+" />
 
             </LinearLayout>
-<!--            fifth row-->
+            <!--            fifth row-->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonZero"
-                    style="@style/Operations"
-                    android:text="0"/>
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonDot"
                     style="@style/Operations"
-                    android:text="."/>
+                    android:text="." />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonZero"
+                    style="@style/Operations"
+                    android:text="0" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonClear"
+                    style="@style/Operations"
+                    android:background="@color/red"
+                    android:text="C" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonEqual"
                     style="@style/Operations"
-                    android:text="="/>
+                    android:background="#4CAF50"
+                    android:text="=" />
 
 
             </LinearLayout>
