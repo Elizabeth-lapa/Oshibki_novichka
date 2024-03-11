@@ -1,17 +1,15 @@
 package com.example.androidcalculator;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import org.mozilla.javascript.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ast.Scope;
 
 public class MainActivity extends AppCompatActivity {
 
