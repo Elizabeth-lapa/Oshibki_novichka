@@ -1,204 +1,246 @@
 package com.example.androidcalculator;
 
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.mozilla.javascript.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.databinding.DataBindingUtil;
-
-import com.example.androidcalculator.databinding.ActivityMainBinding;
-
-import java.text.DecimalFormat;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ast.Scope;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
 
-    private double valueOne = Double.NaN;
-    private double valueTwo;
-
-    private static final char ADDITION = '+';
-    private static final char SUBTRACTION = '-';
-    private static final char MULTIPLICATION = '*';
-    private static final char DIVISION = '/';
-    private char CURRENT_ACTION;
-
-    private DecimalFormat decimalFormat;
+    Button buttonClear, buttonZero, buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, buttonAdd, buttonSubtract, buttonMultiply, buttonOpenBracket, buttonCloseBracket, buttonVectorOpen, buttonVectorClose;
+    Button buttonDivide, buttonDot, buttonEqual;
+    TextView tvInput, tvOutput;
+    String process;
+    Boolean checkBracket = false;
+    Boolean checkVector = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        decimalFormat = new DecimalFormat("#.##########");
+        setContentView(R.layout.activity_main);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        buttonZero = findViewById(R.id.buttonZero);
+        buttonOne = findViewById(R.id.buttonOne);
+        buttonTwo = findViewById(R.id.buttonTwo);
+        buttonThree = findViewById(R.id.buttonThree);
+        buttonFour = findViewById(R.id.buttonFour);
+        buttonFive = findViewById(R.id.buttonFive);
+        buttonSix = findViewById(R.id.buttonSix);
+        buttonSeven = findViewById(R.id.buttonSeven);
+        buttonEight = findViewById(R.id.buttonEight);
+        buttonNine = findViewById(R.id.buttonNine);
+        buttonClear = findViewById(R.id.buttonClear);
+        buttonAdd = findViewById(R.id.buttonAdd);
+        buttonOpenBracket = findViewById(R.id.buttonOpenBracket);
+        buttonCloseBracket = findViewById(R.id.buttonCloseBracket);
+        buttonSubtract = findViewById(R.id.buttonSubtract);
+        buttonMultiply = findViewById(R.id.buttonMultiply);
+        buttonVectorOpen = findViewById(R.id.buttonVectorOpen);
+        buttonVectorClose = findViewById(R.id.buttonVectorClose);
+        buttonDivide = findViewById(R.id.buttonDivide);
+        buttonDot = findViewById(R.id.buttonDot);
+        buttonEqual = findViewById(R.id.buttonEqual);
 
-        binding.buttonDot.setOnClickListener(new View.OnClickListener() {
+        tvInput = findViewById(R.id.tvInput);
+        tvOutput = findViewById(R.id.tvOutput);
+
+        buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + ".");
+            public void onClick(View v) {
+                tvInput.setText("");
+                tvOutput.setText("");
             }
         });
 
-        binding.buttonZero.setOnClickListener(new View.OnClickListener() {
+        buttonZero.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "0");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "0");
             }
         });
 
-        binding.buttonOne.setOnClickListener(new View.OnClickListener() {
+        buttonOne.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "1");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "1");
             }
         });
 
-        binding.buttonTwo.setOnClickListener(new View.OnClickListener() {
+        buttonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "2");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "2");
             }
         });
 
-        binding.buttonThree.setOnClickListener(new View.OnClickListener() {
+        buttonThree.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "3");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "3");
             }
         });
 
-        binding.buttonFour.setOnClickListener(new View.OnClickListener() {
+        buttonFour.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "4");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "4");
             }
         });
 
-        binding.buttonFive.setOnClickListener(new View.OnClickListener() {
+        buttonFive.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "5");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "5");
             }
         });
 
-        binding.buttonSix.setOnClickListener(new View.OnClickListener() {
+        buttonSix.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "6");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "6");
             }
         });
 
-        binding.buttonSeven.setOnClickListener(new View.OnClickListener() {
+        buttonSeven.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "7");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "7");
             }
         });
 
-        binding.buttonEight.setOnClickListener(new View.OnClickListener() {
+        buttonEight.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "8");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "8");
             }
         });
 
-        binding.buttonNine.setOnClickListener(new View.OnClickListener() {
+        buttonNine.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                binding.editText.setText(binding.editText.getText() + "9");
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "9");
             }
         });
 
-        binding.buttonAdd.setOnClickListener(new View.OnClickListener() {
+
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                computeCalculation();
-                CURRENT_ACTION = ADDITION;
-                binding.infoTextView.setText(decimalFormat.format(valueOne) + "+");
-                binding.editText.setText(null);
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "+");
             }
         });
 
-        binding.buttonSubtract.setOnClickListener(new View.OnClickListener() {
+        buttonSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                computeCalculation();
-                CURRENT_ACTION = SUBTRACTION;
-                binding.infoTextView.setText(decimalFormat.format(valueOne) + "-");
-                binding.editText.setText(null);
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "-");
             }
         });
 
-        binding.buttonMultiply.setOnClickListener(new View.OnClickListener() {
+        buttonMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                computeCalculation();
-                CURRENT_ACTION = MULTIPLICATION;
-                binding.infoTextView.setText(decimalFormat.format(valueOne) + "*");
-                binding.editText.setText(null);
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "×");
             }
         });
 
-        binding.buttonDivide.setOnClickListener(new View.OnClickListener() {
+        buttonDivide.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                computeCalculation();
-                CURRENT_ACTION = DIVISION;
-                binding.infoTextView.setText(decimalFormat.format(valueOne) + "/");
-                binding.editText.setText(null);
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "÷");
             }
         });
 
-        binding.buttonEqual.setOnClickListener(new View.OnClickListener() {
+        buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                computeCalculation();
-                binding.infoTextView.setText(binding.infoTextView.getText().toString() +
-                        decimalFormat.format(valueTwo) + " = " + decimalFormat.format(valueOne));
-                valueOne = Double.NaN;
-                CURRENT_ACTION = '0';
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + ",");
             }
         });
 
-        binding.buttonClear.setOnClickListener(new View.OnClickListener() {
+        buttonVectorOpen.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(binding.editText.getText().length() > 0) {
-                    CharSequence currentText = binding.editText.getText();
-                    binding.editText.setText(currentText.subSequence(0, currentText.length()-1));
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "{");
+                checkVector = false;
+            }
+        });
+
+        buttonVectorClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "}");
+                checkVector = true;
+            }
+        });
+
+
+        buttonEqual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+
+                process = process.replaceAll("×", "*");
+//                process = process.replaceAll("%",  "/100");
+                process = process.replaceAll("÷", "/");
+
+                Context rhino = Context.enter();
+                rhino.setOptimizationLevel(-1);
+
+                String finalResult = "";
+
+                try {
+                    Scriptable scriptable = rhino.initStandardObjects();
+                    finalResult = rhino.evaluateString(scriptable, process, "javascript", 1, null).toString();
+                } catch (Exception e) {
+                    finalResult = "0";
                 }
-                else {
-                    valueOne = Double.NaN;
-                    valueTwo = Double.NaN;
-                    binding.editText.setText("");
-                    binding.infoTextView.setText("");
-                }
+                tvOutput.setText(finalResult);
+
+
             }
         });
-    }
 
-    private void computeCalculation() {
-        if(!Double.isNaN(valueOne)) {
-            valueTwo = Double.parseDouble(binding.editText.getText().toString());
-            binding.editText.setText(null);
 
-            if(CURRENT_ACTION == ADDITION)
-                valueOne = this.valueOne + valueTwo;
-            else if(CURRENT_ACTION == SUBTRACTION)
-                valueOne = this.valueOne - valueTwo;
-            else if(CURRENT_ACTION == MULTIPLICATION)
-                valueOne = this.valueOne * valueTwo;
-            else if(CURRENT_ACTION == DIVISION)
-                valueOne = this.valueOne / valueTwo;
-        }
-        else {
-            try {
-                valueOne = Double.parseDouble(binding.editText.getText().toString());
+        buttonOpenBracket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + "(");
             }
-            catch (Exception e){}
-        }
+        });
+
+        buttonCloseBracket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = tvInput.getText().toString();
+                tvInput.setText(process + ")");
+            }
+        });
     }
 }
