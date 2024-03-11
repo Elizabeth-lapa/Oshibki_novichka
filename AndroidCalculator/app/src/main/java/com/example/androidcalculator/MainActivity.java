@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 process = tvInput.getText().toString();
 
                 process = process.replaceAll("×", "*");
-//                process = process.replaceAll("%",  "/100");
+///                process = process.replaceAll("%",  "/100");
                 process = process.replaceAll("÷", "/");
 
                 Context rhino = Context.enter();
