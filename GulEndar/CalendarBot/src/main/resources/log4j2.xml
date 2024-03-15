@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+
+        <Console name="STDOUT">
+            <PatternLayout pattern="%logger{10} %-5level - %msg%throwable{1}%n" />
+        </Console>
+
+        <RollingFile name="roll-by-time"
+                     fileName="logs/log.log"
+                     filePattern="logs/log.%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %logger{36} %p %m %throwable{1}%n</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+            <Root level="info">
+                <AppenderRef ref="roll-by-time"/>
+                <AppenderRef ref="STDOUT"/>
+            </Root>
+    </Loggers>
+</Configuration>
+
