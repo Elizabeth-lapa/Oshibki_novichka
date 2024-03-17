@@ -1,0 +1,199 @@
+2024-03-17 21:40:31 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 17120 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:40:31 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:40:32 org.springframework.context.annotation.AnnotationConfigApplicationContext WARN Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'callbackQueryHandler' defined in file [C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes\Calendar\CalendarBot\body\handlers\CallbackQueryHandler.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'Calendar.CalendarBot.entities.Event' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-03-17 21:40:32 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger INFO 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled. 
+2024-03-17 21:40:32 org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in Calendar.CalendarBot.body.handlers.CallbackQueryHandler required a bean of type 'Calendar.CalendarBot.entities.Event' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'Calendar.CalendarBot.entities.Event' in your configuration.
+ 
+2024-03-17 21:42:15 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 11024 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:42:15 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:42:16 org.springframework.context.annotation.AnnotationConfigApplicationContext WARN Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'callbackQueryHandler' defined in file [C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes\Calendar\CalendarBot\body\handlers\CallbackQueryHandler.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'Calendar.CalendarBot.entities.Event' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-03-17 21:42:16 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger INFO 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled. 
+2024-03-17 21:42:16 org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in Calendar.CalendarBot.body.handlers.CallbackQueryHandler required a bean of type 'Calendar.CalendarBot.entities.Event' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'Calendar.CalendarBot.entities.Event' in your configuration.
+ 
+2024-03-17 21:42:59 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 12124 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:42:59 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:43:00 org.springframework.context.annotation.AnnotationConfigApplicationContext WARN Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'callbackQueryHandler' defined in file [C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes\Calendar\CalendarBot\body\handlers\CallbackQueryHandler.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'Calendar.CalendarBot.entities.Event' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-03-17 21:43:00 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger INFO 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled. 
+2024-03-17 21:43:00 org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter ERROR 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in Calendar.CalendarBot.body.handlers.CallbackQueryHandler required a bean of type 'Calendar.CalendarBot.entities.Event' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'Calendar.CalendarBot.entities.Event' in your configuration.
+ 
+2024-03-17 21:45:48 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 2960 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:45:48 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:45:51 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.767 seconds (process running for 3.978) 
+2024-03-17 21:46:13 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:46:18 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:46:24 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:46:29 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:46:38 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:46:38 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Invalid value for HourOfDay (valid values 0 - 23): 35 java.time.DateTimeException: Invalid value for HourOfDay (valid values 0 - 23): 35
+2024-03-17 21:48:42 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 17132 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:48:42 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:48:44 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.336 seconds (process running for 3.473) 
+2024-03-17 21:48:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:48:55 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:48:56 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:48:58 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:49:00 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:49:07 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:49:07 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Cannot invoke "String.isEmpty()" because the return value of "Calendar.CalendarBot.entities.Event.getText()" is null java.lang.NullPointerException: Cannot invoke "String.isEmpty()" because the return value of "Calendar.CalendarBot.entities.Event.getText()" is null
+2024-03-17 21:49:52 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 12064 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:49:52 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:49:54 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.784 seconds (process running for 4.091) 
+2024-03-17 21:50:04 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:50:06 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:50:07 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:50:08 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:50:11 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:50:17 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:50:21 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:50:21 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection interrupted with: org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа bigint: "null"
+  Позиция: 70
+2024-03-17 21:50:21 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа bigint: "null"
+  Позиция: 70 java.lang.RuntimeException: org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа bigint: "null"
+  Позиция: 70
+2024-03-17 21:51:32 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Connection timed out: no further information org.apache.http.conn.HttpHostConnectException: Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Connection timed out: no further information
+2024-03-17 21:55:23 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 16500 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:55:23 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:55:25 Calendar.CalendarBot.body.PostgresDBAdapter INFO Schema was created 
+2024-03-17 21:55:26 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 3.091 seconds (process running for 4.481) 
+2024-03-17 21:56:00 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:56:05 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Cannot invoke "org.telegram.telegrambots.meta.api.objects.Message.getChatId()" because the return value of "org.telegram.telegrambots.meta.api.objects.Update.getMessage()" is null java.lang.NullPointerException: Cannot invoke "org.telegram.telegrambots.meta.api.objects.Message.getChatId()" because the return value of "org.telegram.telegrambots.meta.api.objects.Update.getMessage()" is null
+2024-03-17 21:57:53 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 13328 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 21:57:53 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 21:57:55 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.611 seconds (process running for 3.808) 
+2024-03-17 21:58:02 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:58:04 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:58:05 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:58:06 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:58:08 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 21:58:12 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:58:15 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 21:58:15 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection interrupted with: org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа integer: "null"
+  Позиция: 70
+2024-03-17 21:58:15 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа integer: "null"
+  Позиция: 70 java.lang.RuntimeException: org.postgresql.util.PSQLException: ОШИБКА: неверный синтаксис для типа integer: "null"
+  Позиция: 70
+2024-03-17 22:00:00 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 1852 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:00:00 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:00:02 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.86 seconds (process running for 4.248) 
+2024-03-17 22:01:19 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 10356 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:01:19 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:01:21 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.888 seconds (process running for 4.136) 
+2024-03-17 22:01:42 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 15512 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:01:42 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:01:44 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.5 seconds (process running for 3.608) 
+2024-03-17 22:01:47 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:01:48 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:01:49 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:01:50 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:01:51 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:01:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:01:57 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:01:57 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.lang.Integer.getInteger(String)" is null java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.lang.Integer.getInteger(String)" is null
+2024-03-17 22:04:01 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 7584 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:04:01 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:04:24 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 23.228 seconds (process running for 24.386) 
+2024-03-17 22:04:33 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 6840 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:04:33 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:04:35 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.415 seconds (process running for 3.606) 
+2024-03-17 22:04:56 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Connection timed out: no further information org.apache.http.conn.HttpHostConnectException: Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Connection timed out: no further information
+2024-03-17 22:04:57 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:04:57 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:04:57 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:04:57 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:04:57 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR For input string: "А" java.lang.NumberFormatException: For input string: "А"
+2024-03-17 22:05:09 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:15 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:19 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:20 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:23 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:05:23 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR For input string: "Ша" java.lang.NumberFormatException: For input string: "Ша"
+2024-03-17 22:05:30 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:05:31 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:32 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:34 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:35 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:05:37 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:05:37 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR For input string: "Ап" java.lang.NumberFormatException: For input string: "Ап"
+2024-03-17 22:06:23 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 5364 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:06:23 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:06:25 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.479 seconds (process running for 3.702) 
+2024-03-17 22:06:42 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:06:44 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:06:45 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:06:47 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:06:48 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:06:51 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:06:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:07:47 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 9184 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:07:47 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:07:49 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.658 seconds (process running for 3.757) 
+2024-03-17 22:07:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:07:55 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:07:56 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:07:58 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:07:59 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:08:01 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:08:03 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:08:03 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.lang.Integer.getInteger(String)" is null java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.lang.Integer.getInteger(String)" is null
+2024-03-17 22:11:29 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 12560 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:11:29 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:11:31 Calendar.CalendarBot.body.PostgresDBAdapter INFO Schema was created 
+2024-03-17 22:11:31 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.894 seconds (process running for 4.107) 
+2024-03-17 22:11:41 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:11:43 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:11:44 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:11:46 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:11:47 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
+2024-03-17 22:11:50 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:11:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:11:59 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:13:44 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 16968 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-17 22:13:44 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-17 22:13:46 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.351 seconds (process running for 3.55) 
+2024-03-17 22:13:49 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-03-17 22:13:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 

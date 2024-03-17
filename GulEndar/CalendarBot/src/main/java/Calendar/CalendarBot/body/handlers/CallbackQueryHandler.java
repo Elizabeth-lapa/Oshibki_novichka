@@ -61,7 +61,7 @@ public class CallbackQueryHandler {
         } else if (data.contains("/minute:")) {
             int minute = Integer.parseInt(data.substring(8));
             System.out.println(minute);
-            event.setHour(minute);
+            event.setMinute(minute);
             SendMessage sm = new SendMessage();
             sm.setChatId(chatId);
             sm.setText("Введите текст");

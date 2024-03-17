@@ -30,7 +30,6 @@ public class MessageHandler {
 
     public BotApiMethod<?> answerMessage(Message message) {
         String chatId = message.getChatId().toString();
-        String currency = "Нет такой команды";
 
         String messageText = message.getText();
 
@@ -60,6 +59,7 @@ public class MessageHandler {
                 return calendar;
             case "Создать событие":
                 SendMessage sm2 = new SendMessage(chatId, "Выберите месяц");
+                event.clear();
                 sm2.setReplyMarkup(inlineKeyboardMaker.getCalendarMonthsButtons("/"));
                 return sm2;
             case "Вывести события":
@@ -71,9 +71,11 @@ public class MessageHandler {
                     System.out.println("Error in handler");
                 }
                 String response = "";
+                System.out.println(events.size());
                 for (Event e:events) {
                     response = response + e.toString() + "\n";
                 }
+                events.clear();
                 SendMessage sndm2 = new SendMessage(chatId, response);
 
                 return sndm2;
@@ -82,10 +84,10 @@ public class MessageHandler {
                     event.setText(messageText);
                     return new SendMessage(chatId,"Введите длительность");
                 }
-                if(event.getDuration() == -1) {
+                if(event.getDuration() < 0) {
                     event.setDuration(Integer.parseInt(messageText));
                     try {
-                        dbAdapter.addEvent(Long.getLong(chatId),event.getText(), event.getDateTime(), event.getDuration());
+                        dbAdapter.addEvent(chatId,event.getText(), event.getDateTime(), event.getDuration());
                     } catch (SQLException e) {
                         System.out.println("Ошибка в addEvent");
                         throw new RuntimeException(e);

@@ -6,23 +6,17 @@ import Calendar.CalendarBot.body.keyboards.InlineKeyboardMaker;
 import Calendar.CalendarBot.body.keyboards.ReplyKeyboardMaker;
 import Calendar.CalendarBot.config.BotConfig;
 import Calendar.CalendarBot.entities.Event;
-import org.apache.logging.log4j.LogManager;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class TelegramBotBody extends TelegramLongPollingBot {
@@ -55,6 +49,7 @@ public class TelegramBotBody extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+
 
         if (update.hasCallbackQuery()) {
             //обработка команд с reply кнопок

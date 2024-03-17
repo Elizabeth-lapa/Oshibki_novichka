@@ -1,15 +1,19 @@
 package Calendar.CalendarBot.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+@Component
 public class Event {
     int duration;
     String text;
     LocalDateTime dateTime;
     public Event(){
         duration = -1;
+        text = "";
         dateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.of("UTC+3")));
     }
 
@@ -65,7 +69,7 @@ public class Event {
     }
 
     public void clear(){
-        duration = 0;
+        duration = -1;
         text = "";
     }
 
