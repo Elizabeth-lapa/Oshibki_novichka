@@ -1,9 +1,12 @@
 package Calendar.CalendarBot.body;
 
 import Calendar.CalendarBot.body.handlers.CallbackQueryHandler;
+import Calendar.CalendarBot.body.handlers.MessageHandler;
 import Calendar.CalendarBot.body.keyboards.InlineKeyboardMaker;
 import Calendar.CalendarBot.body.keyboards.ReplyKeyboardMaker;
 import Calendar.CalendarBot.config.BotConfig;
+import Calendar.CalendarBot.entities.Event;
+import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,6 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +28,19 @@ import java.util.List;
 public class TelegramBotBody extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     CallbackQueryHandler callbackQueryHandler;
+
     ReplyKeyboardMaker replyKeyboardMaker;
     InlineKeyboardMaker inlineKeyboardMaker;
+    PostgresDBAdapter dbAdapter;
+    MessageHandler messageHandler;
+    Event event;
     org.slf4j.Logger logger;
     public TelegramBotBody(BotConfig botConfig){
+        event = new Event();
         this.botConfig = botConfig;
-        callbackQueryHandler = new CallbackQueryHandler();
-        replyKeyboardMaker = new ReplyKeyboardMaker();
-        inlineKeyboardMaker = new InlineKeyboardMaker();
+        dbAdapter = new PostgresDBAdapter();
+        callbackQueryHandler = new CallbackQueryHandler(event);
+        messageHandler = new MessageHandler(event);
         logger = org.slf4j.LoggerFactory.getLogger(TelegramBotBody.class);
     }
     @Override
@@ -46,63 +55,31 @@ public class TelegramBotBody extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        String currency = "";
 
         if (update.hasCallbackQuery()) {
             //обработка команд с reply кнопок
             logger.info("CallbackQuery received");
             CallbackQuery callbackQuery = update.getCallbackQuery();
             try {
-               execute(callbackQueryHandler.processCallbackQuery(callbackQuery));
+                execute(callbackQueryHandler.processCallbackQuery(callbackQuery));
             } catch (IOException e) {
                 logger.info("CallbackHandlerError:", e);
                 throw new RuntimeException(e);
             } catch (TelegramApiException e) {
-            logger.error("Send message in CallbackHandler error:", e);
-        }
+                logger.error("Send message in CallbackHandler error:", e);
+            }
+
         } else if(update.hasMessage() && update.getMessage().hasText()){
             //обработка текстовых сообщений
             logger.info("text message received");
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-
-            switch (messageText){
-                case "/start":
-                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-                    break;
-                case "Я котик чипи чипи":
-                    sendMessage(chatId, "Поздравляю, теперь вы котик чипи чипи", inlineKeyboardMaker.getInlineMessageButtons("/"));
-                    break;
-                case "Я котик happy happy":
-                    sendMessage(chatId, "Поздравляю, теперь вы котик happy happy", inlineKeyboardMaker.getInlineMessageButtons("/"));
-                    break;
-                case "Я ГУЛЬ":
-                    ghoulCommandReceived(chatId);
-                    break;
-                case "Я человек":
-                    sendMessage(chatId, "Круто");
-                    break;
-                default:
-                    sendMessage(chatId, currency);
+            try{
+                execute(messageHandler.answerMessage(update.getMessage()));
+            } catch (TelegramApiException e) {
+                logger.error("Send message in CallbackHandler error:", e);
             }
 
         }
 
-    }
-
-    private void ghoulCommandReceived(Long chatId) {
-        String answer = "";
-
-        for (int i = 1000; i > 0; i = i - 7){
-            answer = answer + Integer.toString(i) + "-7=" + Integer.toString(i-7) + "\n";
-        }
-        sendMessage(chatId, answer);
-    }
-
-    private void startCommandReceived(Long chatId, String name) {
-        String answer = "Hi, " + name + ", who are you?(Кто вы по жизни?)";
-
-        sendMessage(chatId, answer, replyKeyboardMaker.getMainMenuKeyboard());
     }
 
     private void sendMessage(Long chatId, String textToSend){
@@ -142,4 +119,3 @@ public class TelegramBotBody extends TelegramLongPollingBot {
         }
     }
 }
-
