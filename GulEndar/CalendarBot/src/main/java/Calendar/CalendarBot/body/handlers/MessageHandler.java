@@ -7,8 +7,12 @@ import Calendar.CalendarBot.entities.Event;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,24 +23,34 @@ public class MessageHandler {
     ReplyKeyboardMaker replyKeyboardMaker;
     InlineKeyboardMaker inlineKeyboardMaker;
     Event event;
+    org.slf4j.Logger logger;
 
     PostgresDBAdapter dbAdapter;
     public MessageHandler(Event event){
         dbAdapter = new PostgresDBAdapter();
+        logger = org.slf4j.LoggerFactory.getLogger(PostgresDBAdapter.class);
         this.event = event;
         replyKeyboardMaker = new ReplyKeyboardMaker();
         inlineKeyboardMaker = new InlineKeyboardMaker();
     }
 
     public BotApiMethod<?> answerMessage(Message message) {
+
+        SendPhoto sendPhoto = new SendPhoto();
+
         String chatId = message.getChatId().toString();
 
         String messageText = message.getText();
 
+        sendPhoto.setChatId(chatId);
+        //TODO Добавить отправку фото
+        //"https://proprikol.ru/wp-content/uploads/2021/08/kartinki-tokijskij-gul-11.jpg"
+
+        //sendPhoto.setPhoto();
+
         if (messageText == null) {
             throw new IllegalArgumentException();
         }
-
 
         switch (messageText){
             case "/start":
@@ -66,12 +80,11 @@ public class MessageHandler {
                 PostgresDBAdapter DB = new PostgresDBAdapter();
                 ArrayList<Event> events = new ArrayList<>();
                 try {
-                    events = DB.showAllMessages();
+                    events = DB.getAllEvents();
                 } catch (SQLException e) {
                     System.out.println("Error in handler");
                 }
                 String response = "";
-                System.out.println(events.size());
                 for (Event e:events) {
                     response = response + e.toString() + "\n";
                 }

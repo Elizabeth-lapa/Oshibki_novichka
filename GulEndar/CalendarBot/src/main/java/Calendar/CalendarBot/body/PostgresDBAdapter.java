@@ -33,7 +33,7 @@ public class PostgresDBAdapter {
             logger.error("DB connection interrupted with:", e);
             throw e;
         }
-        logger.info("Schema was created");
+        logger.info("Schema and table was created");
         return true;
     }
 
@@ -45,14 +45,14 @@ public class PostgresDBAdapter {
 
                 stmt.executeUpdate(tableSql);
             } }catch (SQLException e){
-            logger.error("DB connection interrupted with:", e);
+            logger.error("DB connection in addEvent interrupted with:", e);
             throw e;
         }
         return true;
     }
 
 
-    public ArrayList<Event> showAllMessages() throws SQLException {
+    public ArrayList<Event> getAllEvents() throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList = new ArrayList<>();
@@ -61,19 +61,18 @@ public class PostgresDBAdapter {
                 ResultSet res = stmt.executeQuery(tableSql);
                 int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными
-                System.out.println(columns);
                 while(res.next()){
-                    for (int i = 1; i <= columns; i++){
+
                         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         eventsList.add(new Event(res.getString(2),LocalDateTime.parse(res.getString(3), formatter),res.getInt(4)));
                     }
-                    }
+
                 res.close();
                 return eventsList;
             }
 
         }catch (SQLException e){
-            logger.error("DB connection interrupted with:", e);
+            logger.error("DB connection in interrupted with:", e);
             throw e;
         }
 

@@ -1,5 +1,6 @@
 package Calendar.CalendarBot.body.handlers;
 
+import Calendar.CalendarBot.body.PostgresDBAdapter;
 import Calendar.CalendarBot.body.keyboards.InlineKeyboardMaker;
 import Calendar.CalendarBot.body.keyboards.ReplyKeyboardMaker;
 import Calendar.CalendarBot.entities.Event;
@@ -16,8 +17,10 @@ public class CallbackQueryHandler {
     Event event;
     ReplyKeyboardMaker replyKeyboardMaker;
     InlineKeyboardMaker inlineKeyboardMaker;
+    org.slf4j.Logger logger;
 
     public CallbackQueryHandler(Event event){
+        logger = org.slf4j.LoggerFactory.getLogger(PostgresDBAdapter.class);
         this.event = event;
         replyKeyboardMaker = new ReplyKeyboardMaker();
         inlineKeyboardMaker = new InlineKeyboardMaker();
@@ -40,7 +43,6 @@ public class CallbackQueryHandler {
 
         } else if (data.contains("/month:")) {
             int month = Integer.parseInt(data.substring(7));
-            System.out.println(month);
             event.setMonth(month);
             SendMessage sm = new SendMessage();
             sm.setReplyMarkup(inlineKeyboardMaker.getCalendarDaysButtons("/"));
@@ -50,7 +52,6 @@ public class CallbackQueryHandler {
 
         }else if (data.contains("/hour:")) {
             int hour = Integer.parseInt(data.substring(6));
-            System.out.println(hour);
             event.setHour(hour);
             SendMessage sm = new SendMessage();
             sm.setReplyMarkup(inlineKeyboardMaker.getCalendarMinuteButtons("/"));
@@ -60,7 +61,6 @@ public class CallbackQueryHandler {
 
         } else if (data.contains("/minute:")) {
             int minute = Integer.parseInt(data.substring(8));
-            System.out.println(minute);
             event.setMinute(minute);
             SendMessage sm = new SendMessage();
             sm.setChatId(chatId);

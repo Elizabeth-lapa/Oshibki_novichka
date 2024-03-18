@@ -12,19 +12,18 @@ public class InlineKeyboardMaker {
 
     public InlineKeyboardMarkup getInlineMessageButtons(String prefix) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-
-            keyboardButtonsRow.add(getButton(
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+            keyboardButtonsRow1.add(getButton(
                     "Радоваться",
                     prefix + "button1"
             ));
-rowList.add(keyboardButtonsRow);
-keyboardButtonsRow.clear();
-            keyboardButtonsRow.add(getButton(
+rowList.add(keyboardButtonsRow1);
+            keyboardButtonsRow2.add(getButton(
                     "Не радоваться",
                     prefix + "button 2"
             ));
-        rowList.add(keyboardButtonsRow);
+        rowList.add(keyboardButtonsRow2);
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
@@ -56,7 +55,11 @@ keyboardButtonsRow.clear();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
 
-        for (int i= 0; i < 24; i++) {
+        keyboardButtonsRow.add(getButton(
+                Integer.toString(0),
+                prefix + "hour:" + Integer.toString(0)
+        ));
+        for (int i= 1; i < 24; i++) {
             keyboardButtonsRow.add(getButton(
                     Integer.toString(i),
                     prefix + "hour:" + Integer.toString(i)
@@ -76,13 +79,16 @@ keyboardButtonsRow.clear();
     public InlineKeyboardMarkup getCalendarMinuteButtons(String prefix) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-
-        for (int i= 0; i < 60; i++) {
+        keyboardButtonsRow.add(getButton(
+                Integer.toString(0),
+                prefix + "minute:" + Integer.toString(0)
+        ));
+        for (int i = 1; i < 60; i++) {
             keyboardButtonsRow.add(getButton(
                     Integer.toString(i),
                     prefix + "minute:" + Integer.toString(i)
             ));
-            if(i % 10 == 0){
+            if(i % 6 == 0){
                 rowList.add(keyboardButtonsRow);
                 keyboardButtonsRow = new ArrayList<>();
             }

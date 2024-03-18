@@ -74,6 +74,6 @@ public class Event {
     }
 
     public String toString() {
-        return dateTime.toString() + " - " + Integer.toString(duration) + " - " + text;
+        return dateTime.getDayOfMonth() + "." +dateTime.getMonth().toString() + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - " + Integer.toString(duration) +" мин" + " - " + text;
     }
 }
