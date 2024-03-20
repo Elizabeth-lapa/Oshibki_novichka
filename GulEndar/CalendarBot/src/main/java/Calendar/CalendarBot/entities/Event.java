@@ -1,21 +1,27 @@
 package Calendar.CalendarBot.entities;
 
+
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Component
 public class Event {
-    int duration;
-    String text;
-    LocalDateTime dateTime;
+
+    private int duration;
+    private String text;
+    private LocalDateTime dateTime;
     public Event(){
         duration = -1;
         text = "";
         dateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.of("UTC+3")));
     }
+
+
 
     public Event(String text, LocalDateTime dateTime,int duration) {
         this.duration = duration;
@@ -74,6 +80,6 @@ public class Event {
     }
 
     public String toString() {
-        return dateTime.getDayOfMonth() + "." +dateTime.getMonth().toString() + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - " + Integer.toString(duration) +" мин" + " - " + text;
+        return dateTime.getDayOfMonth() + " " +dateTime.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, new Locale("ru")) + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - " + Integer.toString(duration) +" мин" + " - " + text;
     }
 }

@@ -64,7 +64,7 @@ rowList.add(keyboardButtonsRow1);
                     Integer.toString(i),
                     prefix + "hour:" + Integer.toString(i)
             ));
-            if(i % 6 == 0){
+            if((i+1) % 6 == 0){
                 rowList.add(keyboardButtonsRow);
                 keyboardButtonsRow = new ArrayList<>();
             }
@@ -88,7 +88,7 @@ rowList.add(keyboardButtonsRow1);
                     Integer.toString(i),
                     prefix + "minute:" + Integer.toString(i)
             ));
-            if(i % 6 == 0){
+            if((i+1) % 6 == 0){
                 rowList.add(keyboardButtonsRow);
                 keyboardButtonsRow = new ArrayList<>();
             }

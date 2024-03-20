@@ -4,6 +4,7 @@ import Calendar.CalendarBot.body.PostgresDBAdapter;
 import Calendar.CalendarBot.body.keyboards.InlineKeyboardMaker;
 import Calendar.CalendarBot.body.keyboards.ReplyKeyboardMaker;
 import Calendar.CalendarBot.entities.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -55,6 +57,10 @@ public class MessageHandler {
         switch (messageText){
             case "/start":
                 return startCommandReceived(chatId, message.getChat().getFirstName());
+            case "/гуль":
+                SendMessage ghoulendar = new SendMessage(chatId, "Who are you?(Кто вы по жизни?)");
+                ghoulendar.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard());
+                return ghoulendar;
             case "Я котик чипи чипи":
                 SendMessage sm = new SendMessage(chatId, "Поздравляю, теперь вы котик чипи чипи");
                 sm.setReplyMarkup(inlineKeyboardMaker.getInlineMessageButtons("/"));
@@ -73,36 +79,55 @@ public class MessageHandler {
                 return calendar;
             case "Создать событие":
                 SendMessage sm2 = new SendMessage(chatId, "Выберите месяц");
-                event.clear();
                 sm2.setReplyMarkup(inlineKeyboardMaker.getCalendarMonthsButtons("/"));
                 return sm2;
-            case "Вывести события":
-                PostgresDBAdapter DB = new PostgresDBAdapter();
-                ArrayList<Event> events = new ArrayList<>();
+            case "События сегодня":
+                String response2 = "";
+                Iterable<Event> events = null;
                 try {
-                    events = DB.getAllEvents();
+                    events = dbAdapter.getTodayEvents(LocalDate.now());
                 } catch (SQLException e) {
-                    System.out.println("Error in handler");
+                    System.err.println("Error in handler");
+                    throw new RuntimeException(e);
+                }
+                for (Event e:events) {
+                    response2 = response2 + e.toString() + "\n";
+                }
+                if (response2.isEmpty()) response2 = "Список событий пуст";
+                SendMessage sm3 = new SendMessage(chatId, response2);
+                return sm3;
+            case "Вывести события":
+                Iterable<Event> events2 = null;
+                try {
+                    events2 = dbAdapter.getAllEvents();
+                } catch (SQLException e) {
+                    System.err.println("Error in handler");
                 }
                 String response = "";
-                for (Event e:events) {
+
+                for (Event e:events2) {
                     response = response + e.toString() + "\n";
                 }
-                events.clear();
+                if (response.isEmpty()) response = "Список событий пуст";
                 SendMessage sndm2 = new SendMessage(chatId, response);
 
                 return sndm2;
             default:
                 if(event.getText().isEmpty()) {
                     event.setText(messageText);
-                    return new SendMessage(chatId,"Введите длительность");
+                    return new SendMessage(chatId,"Введите длительность(мин)");
                 }
                 if(event.getDuration() < 0) {
+                    try {
+                        int duration = Integer.parseInt(messageText);
+                    }catch (NumberFormatException e){
+                        return new SendMessage(chatId,"Введите длительность(число, равное длительности события в минутах)");
+                    }
                     event.setDuration(Integer.parseInt(messageText));
                     try {
                         dbAdapter.addEvent(chatId,event.getText(), event.getDateTime(), event.getDuration());
                     } catch (SQLException e) {
-                        System.out.println("Ошибка в addEvent");
+                        System.err.println("Ошибка в addEvent");
                         throw new RuntimeException(e);
                     }
                     event.clear();
@@ -124,9 +149,9 @@ public class MessageHandler {
     }
 
     private SendMessage startCommandReceived(String chatId, String name) {
-        String answer = "Hi, " + name + ", who are you?(Кто вы по жизни?)";
+        String answer = "Hi, " + name;
         SendMessage sm = new SendMessage(chatId, answer);
-        sm.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard());
+        sm.setReplyMarkup(replyKeyboardMaker.getCalendarMainMenuKeyboard());
         return sm;
     }
 

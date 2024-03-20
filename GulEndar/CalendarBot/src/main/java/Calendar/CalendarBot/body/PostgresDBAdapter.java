@@ -5,6 +5,7 @@ import Calendar.CalendarBot.entities.Event;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ public class PostgresDBAdapter {
     public boolean createTable() throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                String schemaSQL = "CREATE SCHEMA calendar";
+                String schemaSQL = "CREATE SCHEMA IF NOT EXISTS calendar";
                 stmt.executeUpdate(schemaSQL);
-                String tableSql = "create table calendar.Event(chatID varchar(15) , text text, datetime timestamp,duration integer);";
+                String tableSql = "create table IF NOT EXISTS calendar.Event(chatID varchar(15) , text text, datetime timestamp,duration integer);";
                 stmt.executeUpdate(tableSql);
             } }catch (SQLException e){
             logger.error("DB connection interrupted with:", e);
@@ -36,7 +37,9 @@ public class PostgresDBAdapter {
         logger.info("Schema and table was created");
         return true;
     }
-
+    public boolean addEvent(String chatID,Event event) throws SQLException {
+        return addEvent(chatID, event.getText(),event.getDateTime(),event.getDuration());
+    }
     public boolean addEvent(String chatID, String text, java.time.LocalDateTime dateTime, int duration) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
@@ -51,6 +54,33 @@ public class PostgresDBAdapter {
         return true;
     }
 
+
+    public ArrayList<Event> getTodayEvents(LocalDate todayDate) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList = new ArrayList<>();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + todayDate.format(formatter)+ "'";
+                ResultSet res = stmt.executeQuery(tableSql);
+                int columns = res.getMetaData().getColumnCount();
+                // Перебор строк с данными
+                while(res.next()){
+
+                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    eventsList.add(new Event(res.getString(2),LocalDateTime.parse(res.getString(3), formatter),res.getInt(4)));
+                }
+
+                res.close();
+                return eventsList;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+
+    }
 
     public ArrayList<Event> getAllEvents() throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
