@@ -176,12 +176,73 @@ rowList.add(keyboardButtonsRow1);
         return inlineKeyboardMarkup;
     }
 
+    public InlineKeyboardMarkup getEventActionsButtons(String prefix, String eventID) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+        keyboardButtonsRow.add(getButton(
+                "Удалить",
+                prefix + "delete:" + eventID
+        ));
+        keyboardButtonsRow.add(getButton(
+                "Изменить",
+                prefix + "edit:" + eventID
+        ));
+
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getDefaultDurationButtons(String prefix) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+
+        keyboardButtonsRow.add(getButton(
+                "0 минут",
+                prefix + "duration:0"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "5 минут",
+                prefix + "duration:5"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "10 минут",
+                prefix + "duration:10"
+        ));
+
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+        keyboardButtonsRow.add(getButton(
+                "15 минут",
+                prefix + "duration:15"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "30 минут",
+                prefix + "duration:30"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "1 час",
+                prefix + "duration:60"
+        ));
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+        keyboardButtonsRow.add(getButton(
+                "Ввести свое:",
+                prefix + "duration:-1"
+        ));
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
 
     private InlineKeyboardButton getButton(String buttonName, String buttonCallBackData) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(buttonName);
         button.setCallbackData(buttonCallBackData);
-
         return button;
     }
 }

@@ -28,7 +28,7 @@ public class PostgresDBAdapter {
             try (Statement stmt = DB_connection.createStatement()) {
                 String schemaSQL = "CREATE SCHEMA IF NOT EXISTS calendar";
                 stmt.executeUpdate(schemaSQL);
-                String tableSql = "create table IF NOT EXISTS calendar.Event(chatID varchar(15) , text text, datetime timestamp,duration integer);";
+                String tableSql = "create table IF NOT EXISTS calendar.Event(id serial ,chatID varchar(15) , text text, datetime timestamp,duration integer);";
                 stmt.executeUpdate(tableSql);
             } }catch (SQLException e){
             logger.error("DB connection interrupted with:", e);
@@ -65,11 +65,8 @@ public class PostgresDBAdapter {
                 ResultSet res = stmt.executeQuery(tableSql);
                 int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными
-                while(res.next()){
+                eventsList = getEventsListFromResultSet(res);
 
-                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    eventsList.add(new Event(res.getString(2),LocalDateTime.parse(res.getString(3), formatter),res.getInt(4)));
-                }
 
                 res.close();
                 return eventsList;
@@ -82,6 +79,37 @@ public class PostgresDBAdapter {
 
     }
 
+    public void deleteByID(String id) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                String tableSql = "delete from calendar.Event where id = " + id+ ";";
+                stmt.executeUpdate(tableSql);
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
+    public ArrayList<Event> findEventsByText(String text) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList = new ArrayList<>();
+
+                String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%'";
+                ResultSet res = stmt.executeQuery(tableSql);
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                return eventsList;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
     public ArrayList<Event> getAllEvents() throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
@@ -91,12 +119,7 @@ public class PostgresDBAdapter {
                 ResultSet res = stmt.executeQuery(tableSql);
                 int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными
-                while(res.next()){
-
-                        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        eventsList.add(new Event(res.getString(2),LocalDateTime.parse(res.getString(3), formatter),res.getInt(4)));
-                    }
-
+                eventsList = getEventsListFromResultSet(res);
                 res.close();
                 return eventsList;
             }
@@ -106,5 +129,21 @@ public class PostgresDBAdapter {
             throw e;
         }
 
+    }
+    private ArrayList<Event> getEventsListFromResultSet(ResultSet res){
+        ArrayList<Event> eventsList = new ArrayList<>();
+        while(true){
+            try {
+                if (!res.next()) break;
+
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                eventsList.add(new Event(Integer.toString(res.getInt(1)),res.getString(3),LocalDateTime.parse(res.getString(4), formatter),res.getInt(5)));
+
+            } catch (SQLException e) {
+                logger.error("DB connection in interrupted with:", e);
+                throw new RuntimeException(e);
+            }
+        }
+return eventsList;
     }
 }

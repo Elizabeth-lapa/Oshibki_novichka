@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Component
 public class CallbackQueryHandler {
@@ -26,11 +27,12 @@ public class CallbackQueryHandler {
         inlineKeyboardMaker = new InlineKeyboardMaker();
     }
 
+
+
     public BotApiMethod<?> processCallbackQuery(CallbackQuery buttonQuery) throws IOException {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
 
         String data = buttonQuery.getData();
-
 
         if (data.contains("/day:")) {
             int day = Integer.parseInt(data.substring(5));
@@ -40,8 +42,22 @@ public class CallbackQueryHandler {
             sm.setReplyMarkup(inlineKeyboardMaker.getCalendarHourButtons("/"));
             sm.setText("Выберите час");
             return sm;
-
-        } else if (data.contains("/month:")) {
+        }
+            else if (data.contains("/delete:")) {
+                PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+                String id = data.substring(data.indexOf(':') + 1);
+            try {
+                dbAdapter.deleteByID(id);
+            } catch (SQLException e) {
+                logger.error("Deleting message error:", e);
+                throw new RuntimeException(e);
+            }
+            SendMessage sm = new SendMessage();
+                sm.setChatId(chatId);
+                sm.setText("Событие удалено");
+                return sm;
+            }
+         else if (data.contains("/month:")) {
             int month = Integer.parseInt(data.substring(7));
             event.setMonth(month);
             SendMessage sm = new SendMessage();
@@ -60,11 +76,31 @@ public class CallbackQueryHandler {
             return sm;
 
         } else if (data.contains("/minute:")) {
-            int minute = Integer.parseInt(data.substring(8));
+            int minute = Integer.parseInt(data.substring(data.indexOf(':') + 1));
             event.setMinute(minute);
             SendMessage sm = new SendMessage();
             sm.setChatId(chatId);
             sm.setText("Введите текст");
+            return sm;
+        }else if (data.contains("/duration:")) {
+            int duration = Integer.parseInt(data.substring(data.indexOf(':') + 1));
+            event.setDuration(duration);
+            if (duration == -1) {
+                SendMessage sm = new SendMessage();
+                sm.setChatId(chatId);
+                sm.setText("Введите длительность:");
+                return sm;
+            }
+            PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+            try {
+                dbAdapter.addEvent(chatId,event.getText(), event.getDateTime(), event.getDuration());
+            } catch (SQLException e) {
+               logger.error("Ошибка при вызове addEvent",e);
+                throw new RuntimeException(e);
+            }
+            SendMessage sm = new SendMessage();
+            sm.setChatId(chatId);
+            sm.setText("Событие создано");
             return sm;
         }
         switch (data) {

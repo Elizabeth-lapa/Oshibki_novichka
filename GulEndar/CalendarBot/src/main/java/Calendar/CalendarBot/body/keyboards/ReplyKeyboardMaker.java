@@ -45,10 +45,13 @@ public class ReplyKeyboardMaker {
         KeyboardRow row3 = new KeyboardRow();
         row3.add(new KeyboardButton("События сегодня"));
 
+        KeyboardRow row4 = new KeyboardRow();
+        row4.add(new KeyboardButton("Найти события"));
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
+        keyboard.add(row4);
         final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(keyboard);
         replyKeyboardMarkup.setSelective(true);

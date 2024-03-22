@@ -15,13 +15,21 @@ public class Event {
     private int duration;
     private String text;
     private LocalDateTime dateTime;
+
+    private String id = "";
+
     public Event(){
-        duration = -1;
-        text = "";
+        duration = 1;
+        text = "blank";
         dateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.of("UTC+3")));
     }
 
-
+    public Event(String id, String text, LocalDateTime dateTime,int duration) {
+        this.id = id;
+        this.duration = duration;
+        this.text = text;
+        this.dateTime = dateTime;
+    }
 
     public Event(String text, LocalDateTime dateTime,int duration) {
         this.duration = duration;
@@ -51,6 +59,14 @@ public class Event {
 
     public void setDayOfMonth(int dayOfMonth){
         dateTime = dateTime.withDayOfMonth(dayOfMonth);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setMonth(int month){
