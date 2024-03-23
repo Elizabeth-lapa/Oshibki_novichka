@@ -28,5 +28,5 @@
 </ul>
 
 <p>Инструкция по использыванию:</p>
-![](https://github.com/Elizabeth-lapa/Oshibki_novichka/blob/develop/gif/view-bot.gif)
+<img src="https://github.com/Elizabeth-lapa/Oshibki_novichka/blob/develop/gif/view-bot.gif"/>
 
