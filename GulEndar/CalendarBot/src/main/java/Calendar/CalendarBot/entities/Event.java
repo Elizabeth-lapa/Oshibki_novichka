@@ -37,6 +37,17 @@ public class Event {
         this.dateTime = dateTime;
     }
 
+    public void setEvent(Event event){
+        this.id = event.getId();
+        this.duration = event.getDuration();
+        this.text = event.getText();
+        this.dateTime = event.getDateTime();
+    }
+
+    public Event getEvent(){
+        return new Event(id,text,dateTime,duration);
+    }
+
     public int getDuration() {
         return duration;
     }
@@ -96,6 +107,16 @@ public class Event {
     }
 
     public String toString() {
-        return dateTime.getDayOfMonth() + " " +dateTime.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, new Locale("ru")) + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - " + Integer.toString(duration) +" мин" + " - " + text;
+        String str =  dateTime.getDayOfMonth() + " " +dateTime.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, new Locale("ru")) + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - ";
+         if (duration % 60 == 0) {
+            int hours = duration / 60;
+            str = str + hours + "ч";
+        } else if(duration > 60) {
+            int minutes = duration % 60;
+            int hours = duration / 60;
+            str = str + hours + "ч " + minutes + "мин";
+        } else str = str + duration +"мин";
+        str = str + " - " + text;
+        return str;
     }
 }

@@ -19,24 +19,26 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class TelegramBotBody extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     CallbackQueryHandler callbackQueryHandler;
-
+    HashMap<String, Event> usersIvents;
+    HashMap<String, String> usersLastMessages;
     ReplyKeyboardMaker replyKeyboardMaker;
     InlineKeyboardMaker inlineKeyboardMaker;
     PostgresDBAdapter dbAdapter;
     MessageHandler messageHandler;
-    Event event;
     org.slf4j.Logger logger;
     public TelegramBotBody(BotConfig botConfig){
-        event = new Event();
+         usersIvents = new HashMap<>();
+         usersLastMessages = new HashMap<>();
         this.botConfig = botConfig;
         dbAdapter = new PostgresDBAdapter();
-        callbackQueryHandler = new CallbackQueryHandler(event);
-        messageHandler = new MessageHandler(event, this);
+        callbackQueryHandler = new CallbackQueryHandler(usersIvents,this, usersLastMessages);
+        messageHandler = new MessageHandler(usersIvents, this, usersLastMessages);
         logger = org.slf4j.LoggerFactory.getLogger(TelegramBotBody.class);
     }
     @Override
@@ -55,7 +57,7 @@ public class TelegramBotBody extends TelegramLongPollingBot {
 
         if (update.hasCallbackQuery()) {
             //обработка команд с reply кнопок
-            logger.info("CallbackQuery received");
+            logger.info("CallbackQuery received from " + update.getCallbackQuery().getMessage().getChatId());
             CallbackQuery callbackQuery = update.getCallbackQuery();
             try {
                 execute(callbackQueryHandler.processCallbackQuery(callbackQuery));
@@ -63,12 +65,12 @@ public class TelegramBotBody extends TelegramLongPollingBot {
                 logger.info("CallbackHandlerError:", e);
                 throw new RuntimeException(e);
             } catch (TelegramApiException e) {
-                logger.error("Send message in CallbackHandler error:", e);
+                logger.error("Send message in CallbackHandler call error:", e);
             }
 
         } else if(update.hasMessage() && update.getMessage().hasText()){
             //обработка текстовых сообщений
-            logger.info("text message received");
+            logger.info("text message received from " + update.getMessage().getChat().getFirstName() +" " +  update.getMessage().getChatId());
             try{
                     execute(messageHandler.answerMessage(update.getMessage()));
             } catch (TelegramApiException e) {

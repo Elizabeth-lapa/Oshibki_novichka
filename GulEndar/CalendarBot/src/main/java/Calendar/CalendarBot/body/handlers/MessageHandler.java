@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @Component
@@ -25,16 +26,17 @@ public class MessageHandler {
     TelegramBotBody botBody;
     ReplyKeyboardMaker replyKeyboardMaker;
     InlineKeyboardMaker inlineKeyboardMaker;
-    Event event;
+    HashMap<String, Event> usersIvents;
+    HashMap<String, String> usersLastMessages;
     org.slf4j.Logger logger;
-    String lastMessage = "";
 
     PostgresDBAdapter dbAdapter;
-    public MessageHandler(Event event, TelegramBotBody botBody){
+    public MessageHandler(HashMap<String, Event> usersIvents, TelegramBotBody botBody,HashMap<String, String> usersLastMessages){
         this.botBody = botBody;
         dbAdapter = new PostgresDBAdapter();
         logger = org.slf4j.LoggerFactory.getLogger(PostgresDBAdapter.class);
-        this.event = event;
+        this.usersLastMessages = usersLastMessages;
+        this.usersIvents = usersIvents;
         replyKeyboardMaker = new ReplyKeyboardMaker();
         inlineKeyboardMaker = new InlineKeyboardMaker();
     }
@@ -47,19 +49,26 @@ public class MessageHandler {
         sendMessage.setChatId(chatId);
         String answerText;
 
+        System.out.println(messageText);
+
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         //TODO Добавить отправку фото
+        //TODO Map для разных чатов
         //"https://proprikol.ru/wp-content/uploads/2021/08/kartinki-tokijskij-gul-11.jpg"
 
         //sendPhoto.setPhoto();
 
+        if (!usersIvents.containsKey(chatId)) usersIvents.put(chatId,new Event());
+        if (!usersLastMessages.containsKey(chatId)) usersLastMessages.put(chatId,"start");
         if (messageText == null) {
             throw new IllegalArgumentException();
         }
 
         switch (messageText){
             case "/start":
+                if (!usersIvents.containsKey(chatId)) usersIvents.put(chatId,new Event());
+                if (!usersLastMessages.containsKey(chatId)) usersLastMessages.put(chatId,"start");
                  answerText = "Здравствуйте, " + message.getChat().getFirstName();
             sendMessage.setText(answerText);
             sendMessage.setReplyMarkup(replyKeyboardMaker.getCalendarMainMenuKeyboard());
@@ -88,42 +97,54 @@ public class MessageHandler {
             case "Создать событие":
                 sendMessage.setText("Выберите месяц");
                 sendMessage.setReplyMarkup(inlineKeyboardMaker.getCalendarMonthsButtons("/"));
-                event.clear();
+                usersIvents.get(chatId).clear();
+                usersLastMessages.put(chatId,messageText);
                 return sendMessage;
             case "События сегодня":
                 return getTodayEvents(chatId);
             case "Вывести события":
                 return getAllEvents(chatId);
             case "Найти события":
-                lastMessage = messageText;
-                sendMessage.setText("Введите слово или несколько слов из описания событий");
+                usersLastMessages.put(chatId, messageText);
+                sendMessage.setText("Введите несколько букв, слово или несколько слов из описания события");
                 return sendMessage;
             default:
-                switch (lastMessage){
+                switch (usersLastMessages.get(chatId)){
                     case "Найти события":
                         return findEventsByText(chatId, messageText);
                 }
-                if(event.getText().isEmpty()) {
-                    event.setText(messageText);
+                if(usersIvents.get(chatId).getText().isEmpty()) {
+                    if (usersLastMessages.get(chatId).equals("edit")){
+                        PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+                        dbAdapter.insertInto("text", messageText, usersIvents.get(chatId).getId());
+                        return new SendMessage(chatId, "Изменено");
+                    }
+                    usersIvents.get(chatId).setText(messageText);
                     sendMessage.setReplyMarkup(inlineKeyboardMaker.getDefaultDurationButtons("/"));
                     sendMessage.setText("Введите длительность(мин)");
                     return sendMessage;
                 }
-                if(event.getDuration() < 0) {
+                if(usersIvents.get(chatId).getDuration() < 0) {
+                    int duration = 0;
                     try {
-                        int duration = Integer.parseInt(messageText);
+                        duration = Integer.parseInt(messageText);
                     }catch (NumberFormatException e){
                         sendMessage.setText("Введите длительность(число, равное длительности события в минутах)");
                         return sendMessage;
                     }
-                    event.setDuration(Integer.parseInt(messageText));
+                    usersIvents.get(chatId).setDuration(duration);
+                    if (usersLastMessages.get(chatId).equals("edit")){
+                        PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+                        dbAdapter.insertInto("duration", duration, usersIvents.get(chatId).getId());
+                        return new SendMessage(chatId, "Изменено");
+                    }
                     try {
-                        dbAdapter.addEvent(chatId,event.getText(), event.getDateTime(), event.getDuration());
+                        dbAdapter.addEvent(chatId,usersIvents.get(chatId));
                     } catch (SQLException e) {
                         logger.error("Ошибка при вызове addEvent",e);
                         throw new RuntimeException(e);
                     }
-                    event.clear();
+                    usersIvents.get(chatId).clear();
                     return new SendMessage(chatId,"Событие создано");
                 }
                 break;
@@ -191,8 +212,8 @@ public class MessageHandler {
             botApiMethods.add(sendMessage);
         }
         botBody.executeMethods(botApiMethods);
-        if (botApiMethods.isEmpty()) response = "Не найдено таких событий";
         response = "Выберите действие";
+        if (botApiMethods.isEmpty()) response = "Не найдено событий";
         SendMessage sendMessage = new SendMessage(chatId, response);
         return sendMessage;
 

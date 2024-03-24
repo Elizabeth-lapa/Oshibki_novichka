@@ -30,11 +30,11 @@ rowList.add(keyboardButtonsRow1);
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup getCalendarDaysButtons(String prefix) {
+    public InlineKeyboardMarkup getCalendarDaysButtons(String prefix, int numOfDays) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
 
-        for (int i= 1; i <= 31; i++) {
+        for (int i= 1; i <= numOfDays; i++) {
             keyboardButtonsRow.add(getButton(
                     Integer.toString(i),
                     prefix + "day:" + Integer.toString(i)
@@ -114,20 +114,18 @@ rowList.add(keyboardButtonsRow1);
                 "Февраль",
                 prefix + "month:2"
         ));
-        rowList.add(keyboardButtonsRow);
-        keyboardButtonsRow = new ArrayList<>();
-
         keyboardButtonsRow.add(getButton(
                 "Март",
                 prefix + "month:3"
         ));
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow = new ArrayList<>();
+
+
         keyboardButtonsRow.add(getButton(
                 "Апрель",
                 prefix + "month:4"
         ));
-        rowList.add(keyboardButtonsRow);
-        keyboardButtonsRow= new ArrayList<>();
-
         keyboardButtonsRow.add(getButton(
                 "Май",
                 prefix + "month:5"
@@ -136,6 +134,7 @@ rowList.add(keyboardButtonsRow1);
                 "Июнь",
                 prefix + "month:6"
         ));
+
         rowList.add(keyboardButtonsRow);
         keyboardButtonsRow= new ArrayList<>();
 
@@ -147,19 +146,18 @@ rowList.add(keyboardButtonsRow1);
                 "Август",
                 prefix + "month:8"
         ));
-        rowList.add(keyboardButtonsRow);
-        keyboardButtonsRow= new ArrayList<>();
-
         keyboardButtonsRow.add(getButton(
                 "Сентябрь",
                 prefix + "month:9"
         ));
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+
+
         keyboardButtonsRow.add(getButton(
                 "Октябрь",
                 prefix + "month:10"
         ));
-        rowList.add(keyboardButtonsRow);
-        keyboardButtonsRow= new ArrayList<>();
 
         keyboardButtonsRow.add(getButton(
                 "Ноябрь",
@@ -231,8 +229,38 @@ rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow);
         keyboardButtonsRow= new ArrayList<>();
         keyboardButtonsRow.add(getButton(
-                "Ввести свое:",
+                "Ввести свое",
                 prefix + "duration:-1"
+        ));
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getEditButtons(String prefix, String id) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+
+        keyboardButtonsRow.add(getButton(
+                "Дата",
+                prefix + "edit:date:" + id
+        ));
+        keyboardButtonsRow.add(getButton(
+                "Время",
+                prefix + "edit:time:" + id
+        ));
+        keyboardButtonsRow.add(getButton(
+                "Длительность",
+                prefix + "edit:duration:" + id
+        ));
+
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+        keyboardButtonsRow.add(getButton(
+                "Описание",
+                prefix + "edit:text:" + id
         ));
         rowList.add(keyboardButtonsRow);
         inlineKeyboardMarkup.setKeyboard(rowList);

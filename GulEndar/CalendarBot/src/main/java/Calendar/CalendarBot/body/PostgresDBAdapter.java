@@ -79,7 +79,7 @@ public class PostgresDBAdapter {
 
     }
 
-    public void deleteByID(String id) throws SQLException {
+    public void deleteByID(String id)  {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 String tableSql = "delete from calendar.Event where id = " + id+ ";";
@@ -88,6 +88,61 @@ public class PostgresDBAdapter {
 
         }catch (SQLException e){
             logger.error("DB connection in interrupted with:", e);
+        }
+    }
+
+    public void insertInto(String parametr, int value, String id) {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+
+                String tableSql = "update calendar.Event set " + parametr + " = " + value + " where id = " + id + ";";
+                stmt.executeUpdate(tableSql);
+            }
+        }catch (SQLException e){
+            logger.error("Can not insert in DB:", e);
+        }
+    }
+
+    public void insertInto(java.time.LocalDateTime dateTime, String id){
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+
+                String tableSql = "update calendar.Event set datetime = '" + dateTime + "' where id = " + id + ";";
+                stmt.executeUpdate(tableSql);
+            }
+        }catch (SQLException e){
+            logger.error("Can not insert timestamp in data base:", e);
+        }
+    }
+
+    public void insertInto(String parametr, String value, String id){
+            try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+                try (Statement stmt = DB_connection.createStatement()) {
+
+                    String tableSql = "update calendar.Event set " + parametr + " = '" + value + "' where id = " + id + ";";
+                    stmt.executeUpdate(tableSql);
+                }
+            }catch (SQLException e){
+                logger.error("Can not insert in DB:", e);
+            }
+        }
+
+    public Event findByID(String id) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+
+                String tableSql = "Select * from calendar.Event where id = " + id+ ";";
+                ResultSet res = stmt.executeQuery(tableSql);
+
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                return eventsList.get(0);
+            }
+
+        }catch (SQLException e){
+            logger.error("Сan not get an event from DB:", e);
             throw e;
         }
     }
@@ -95,7 +150,7 @@ public class PostgresDBAdapter {
     public ArrayList<Event> findEventsByText(String text) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                ArrayList<Event> eventsList = new ArrayList<>();
+                ArrayList<Event> eventsList;
 
                 String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%'";
                 ResultSet res = stmt.executeQuery(tableSql);
