@@ -13,13 +13,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -108,8 +106,8 @@ public class MessageHandler {
                 return getTomorrowEvents(chatId);
             case "Найти по дате":
                 usersLastMessages.put(chatId,messageText);
-                sendMessage.setText("Введите дату в формате дд, дд.мм или дд.мм.гггг. \n-В 1-м и 2-м шаблоне месяц и год автоматически заменяются текущими."
-                + "\n-Поставьте знак < или > перед датой, чтобы найти события до/после введеной даты.");
+                sendMessage.setText("Введите дату в формате дд, дд.мм или дд.мм.гггг. \n+В 1-м и 2-м шаблоне месяц и год автоматически заменяются текущими."
+                + "\n+Поставьте знак < или > перед датой, чтобы найти события до/после введеной даты.");
                 return sendMessage;
             case "Вывести события":
                 return getAllEvents(chatId);
@@ -195,7 +193,7 @@ public class MessageHandler {
         String response = "";
         Iterable<Event> events = null;
         try {
-            events = dbAdapter.getEventsByDate(LocalDate.now());
+            events = dbAdapter.getEventsByDate(chatId,LocalDate.now());
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -210,7 +208,7 @@ public class MessageHandler {
         String response = "";
         Iterable<Event> events = null;
         try {
-            events = dbAdapter.getEventsByDate(LocalDate.now().plusDays(1));
+            events = dbAdapter.getEventsByDate(chatId, LocalDate.now().plusDays(1));
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -224,7 +222,7 @@ public class MessageHandler {
     private SendMessage getAllEvents(String chatId) {
         Iterable<Event> events = null;
         try {
-            events = dbAdapter.getAllEvents();
+            events = dbAdapter.getAllEvents(chatId);
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -284,7 +282,7 @@ public class MessageHandler {
         Iterable<Event> events;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
-            events = dbAdapter.getEventsByText(text);
+            events = dbAdapter.getEventsByText(chatId,text);
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -316,7 +314,7 @@ public class MessageHandler {
         Iterable<Event> events = null;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
-            events = dbAdapter.getEventsByDate(dateTime);
+            events = dbAdapter.getEventsByDate(chatId, dateTime);
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -348,7 +346,7 @@ public class MessageHandler {
         Iterable<Event> events = null;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
-            events = dbAdapter.getEventsBeforeOrAfterDate(dateTime, "<");
+            events = dbAdapter.getEventsBeforeOrAfterDate(chatId,dateTime, "<");
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
@@ -380,7 +378,7 @@ public class MessageHandler {
         Iterable<Event> events = null;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
-            events = dbAdapter.getEventsBeforeOrAfterDate(dateTime, ">");
+            events = dbAdapter.getEventsBeforeOrAfterDate(chatId,dateTime, ">");
         } catch(SQLException e){
             logger.error("can not get records from database: ", e);
             return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");

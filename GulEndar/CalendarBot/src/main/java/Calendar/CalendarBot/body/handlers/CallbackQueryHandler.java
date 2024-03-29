@@ -20,7 +20,8 @@ import java.util.Locale;
 
 //TODO Изменение дней в месяце при изменении месяца месяца
 //TODO перевести все на switch
-
+//TODO корректный вывод событий, которые длятся несколько дней
+//TODO поиск конфликтов
 @Component
 public class CallbackQueryHandler {
 

@@ -55,13 +55,13 @@ public class PostgresDBAdapter {
     }
 
 
-    public ArrayList<Event> getEventsByDate(LocalDate date) throws SQLException {
+    public ArrayList<Event> getEventsByDate(String id, LocalDate date) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + date.format(formatter)+ "' ORDER BY datetime;";
+                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + date.format(formatter)+ "' AND chatID = '" + id + "' ORDER BY datetime;";
                 ResultSet res = stmt.executeQuery(tableSql);
                 // Перебор строк с данными
                 eventsList = getEventsListFromResultSet(res);
@@ -78,13 +78,13 @@ public class PostgresDBAdapter {
 
     }
 
-    public ArrayList<Event> getEventsBeforeOrAfterDate(LocalDate date, String lessORmoreSign) throws SQLException {
+    public ArrayList<Event> getEventsBeforeOrAfterDate(String chatId, LocalDate date, String lessORmoreSign) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                String tableSql = "Select * from calendar.Event where DATE(datetime) "+ lessORmoreSign +" '" + date.format(formatter)+ "' ORDER BY datetime;";
+                String tableSql = "Select * from calendar.Event where DATE(datetime) "+ lessORmoreSign +" '" + date.format(formatter)+ "'AND chatID = '" + chatId + "' ORDER BY datetime;";
                 ResultSet res = stmt.executeQuery(tableSql);
                 // Перебор строк с данными
                 eventsList = getEventsListFromResultSet(res);
@@ -104,7 +104,7 @@ public class PostgresDBAdapter {
     public void deleteByID(String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                String tableSql = "delete from calendar.Event where id = " + id+ ";";
+                String tableSql = "delete from calendar.Event where id = '" + id+ "';";
                 stmt.executeUpdate(tableSql);
             }
 
@@ -118,7 +118,7 @@ public class PostgresDBAdapter {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
-                String tableSql = "update calendar.Event set " + parametr + " = " + value + " where id = " + id + ";";
+                String tableSql = "update calendar.Event set " + parametr + " = " + value + " where id = '" + id + "';";
                 stmt.executeUpdate(tableSql);
             }
         }catch (SQLException e){
@@ -131,7 +131,7 @@ public class PostgresDBAdapter {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
-                String tableSql = "update calendar.Event set datetime = '" + dateTime + "' where id = " + id + ";";
+                String tableSql = "update calendar.Event set datetime = '" + dateTime + "' where id = '" + id + "';";
                 stmt.executeUpdate(tableSql);
             }
         }catch (SQLException e){
@@ -144,7 +144,7 @@ public class PostgresDBAdapter {
             try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
                 try (Statement stmt = DB_connection.createStatement()) {
 
-                    String tableSql = "update calendar.Event set " + parametr + " = '" + value + "' where id = " + id + ";";
+                    String tableSql = "update calendar.Event set " + parametr + " = '" + value + "' where id = '" + id + "';";
                     stmt.executeUpdate(tableSql);
                 }
             }catch (SQLException e){
@@ -158,7 +158,7 @@ public class PostgresDBAdapter {
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
 
-                String tableSql = "Select * from calendar.Event where id = " + id+ ";";
+                String tableSql = "Select * from calendar.Event where id = '" + id+ "';";
                 ResultSet res = stmt.executeQuery(tableSql);
 
                 eventsList = getEventsListFromResultSet(res);
@@ -172,12 +172,12 @@ public class PostgresDBAdapter {
         }
     }
 
-    public ArrayList<Event> getEventsByText(String text) throws SQLException {
+    public ArrayList<Event> getEventsByText(String id ,String text) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
 
-                String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%' ORDER BY datetime";
+                String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%'AND chatID = '" + id + "' ORDER BY datetime";
                 ResultSet res = stmt.executeQuery(tableSql);
                 eventsList = getEventsListFromResultSet(res);
                 res.close();
@@ -190,14 +190,13 @@ public class PostgresDBAdapter {
         }
     }
 
-    public ArrayList<Event> getAllEvents() throws SQLException {
+    public ArrayList<Event> getAllEvents(String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                ArrayList<Event> eventsList = new ArrayList<>();
+                ArrayList<Event> eventsList;
 
-                String tableSql = "Select * from calendar.Event ORDER BY datetime";
+                String tableSql = "Select * from calendar.Event where chatID = '" + id + "' ORDER BY datetime";
                 ResultSet res = stmt.executeQuery(tableSql);
-                int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными
                 eventsList = getEventsListFromResultSet(res);
                 res.close();
