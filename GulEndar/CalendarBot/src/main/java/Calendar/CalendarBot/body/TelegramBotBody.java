@@ -27,8 +27,6 @@ public class TelegramBotBody extends TelegramLongPollingBot {
     CallbackQueryHandler callbackQueryHandler;
     HashMap<String, Event> usersIvents;
     HashMap<String, String> usersLastMessages;
-    ReplyKeyboardMaker replyKeyboardMaker;
-    InlineKeyboardMaker inlineKeyboardMaker;
     PostgresDBAdapter dbAdapter;
     MessageHandler messageHandler;
     org.slf4j.Logger logger;
@@ -54,6 +52,7 @@ public class TelegramBotBody extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
+    //TODO обработка дат типа 1990 (могут сломаться)
 
         if (update.hasCallbackQuery()) {
             //обработка команд с reply кнопок
@@ -62,10 +61,10 @@ public class TelegramBotBody extends TelegramLongPollingBot {
             try {
                 execute(callbackQueryHandler.processCallbackQuery(callbackQuery));
             } catch (IOException e) {
-                logger.info("CallbackHandlerError:", e);
+                logger.error("CallbackHandlerError:", e);
                 throw new RuntimeException(e);
             } catch (TelegramApiException e) {
-                logger.error("Send message in CallbackHandler call error:", e);
+                logger.error("Sending message in CallbackHandler call error:", e);
             }
 
         } else if(update.hasMessage() && update.getMessage().hasText()){
@@ -74,11 +73,9 @@ public class TelegramBotBody extends TelegramLongPollingBot {
             try{
                     execute(messageHandler.answerMessage(update.getMessage()));
             } catch (TelegramApiException e) {
-                logger.error("Send message in CallbackHandler error:", e);
+                logger.error("Sending message in TextMessageHandler error:", e);
             }
-
         }
-
     }
 
     public void executeMethods(ArrayList<BotApiMethod<?>> methodsForExecute){

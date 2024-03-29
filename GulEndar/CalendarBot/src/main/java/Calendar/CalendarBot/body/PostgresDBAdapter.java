@@ -55,15 +55,14 @@ public class PostgresDBAdapter {
     }
 
 
-    public ArrayList<Event> getTodayEvents(LocalDate todayDate) throws SQLException {
+    public ArrayList<Event> getEventsByDate(LocalDate date) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                ArrayList<Event> eventsList = new ArrayList<>();
+                ArrayList<Event> eventsList;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + todayDate.format(formatter)+ "'";
+                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + date.format(formatter)+ "' ORDER BY datetime;";
                 ResultSet res = stmt.executeQuery(tableSql);
-                int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными
                 eventsList = getEventsListFromResultSet(res);
 
@@ -79,7 +78,30 @@ public class PostgresDBAdapter {
 
     }
 
-    public void deleteByID(String id)  {
+    public ArrayList<Event> getEventsBeforeOrAfterDate(LocalDate date, String lessORmoreSign) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                String tableSql = "Select * from calendar.Event where DATE(datetime) "+ lessORmoreSign +" '" + date.format(formatter)+ "' ORDER BY datetime;";
+                ResultSet res = stmt.executeQuery(tableSql);
+                // Перебор строк с данными
+                eventsList = getEventsListFromResultSet(res);
+
+
+                res.close();
+                return eventsList;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+
+    }
+
+    public void deleteByID(String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 String tableSql = "delete from calendar.Event where id = " + id+ ";";
@@ -88,10 +110,11 @@ public class PostgresDBAdapter {
 
         }catch (SQLException e){
             logger.error("DB connection in interrupted with:", e);
+            throw e;
         }
     }
 
-    public void insertInto(String parametr, int value, String id) {
+    public void insertInto(String parametr, int value, String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
@@ -100,10 +123,11 @@ public class PostgresDBAdapter {
             }
         }catch (SQLException e){
             logger.error("Can not insert in DB:", e);
+            throw e;
         }
     }
 
-    public void insertInto(java.time.LocalDateTime dateTime, String id){
+    public void insertInto(java.time.LocalDateTime dateTime, String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
@@ -112,10 +136,11 @@ public class PostgresDBAdapter {
             }
         }catch (SQLException e){
             logger.error("Can not insert timestamp in data base:", e);
+            throw e;
         }
     }
 
-    public void insertInto(String parametr, String value, String id){
+    public void insertInto(String parametr, String value, String id) throws SQLException {
             try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
                 try (Statement stmt = DB_connection.createStatement()) {
 
@@ -124,10 +149,11 @@ public class PostgresDBAdapter {
                 }
             }catch (SQLException e){
                 logger.error("Can not insert in DB:", e);
+                throw e;
             }
         }
 
-    public Event findByID(String id) throws SQLException {
+    public Event getByID(String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
@@ -135,7 +161,6 @@ public class PostgresDBAdapter {
                 String tableSql = "Select * from calendar.Event where id = " + id+ ";";
                 ResultSet res = stmt.executeQuery(tableSql);
 
-                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 eventsList = getEventsListFromResultSet(res);
                 res.close();
                 return eventsList.get(0);
@@ -147,12 +172,12 @@ public class PostgresDBAdapter {
         }
     }
 
-    public ArrayList<Event> findEventsByText(String text) throws SQLException {
+    public ArrayList<Event> getEventsByText(String text) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
 
-                String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%'";
+                String tableSql = "Select * from calendar.Event where text ilike '%" + text+ "%' ORDER BY datetime";
                 ResultSet res = stmt.executeQuery(tableSql);
                 eventsList = getEventsListFromResultSet(res);
                 res.close();
@@ -170,7 +195,7 @@ public class PostgresDBAdapter {
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList = new ArrayList<>();
 
-                String tableSql = "Select * from calendar.Event";
+                String tableSql = "Select * from calendar.Event ORDER BY datetime";
                 ResultSet res = stmt.executeQuery(tableSql);
                 int columns = res.getMetaData().getColumnCount();
                 // Перебор строк с данными

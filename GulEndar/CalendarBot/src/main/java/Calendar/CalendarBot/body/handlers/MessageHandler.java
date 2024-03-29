@@ -5,20 +5,23 @@ import Calendar.CalendarBot.body.TelegramBotBody;
 import Calendar.CalendarBot.body.keyboards.InlineKeyboardMaker;
 import Calendar.CalendarBot.body.keyboards.ReplyKeyboardMaker;
 import Calendar.CalendarBot.entities.Event;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.File;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 
-import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 @Component
@@ -54,7 +57,6 @@ public class MessageHandler {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         //TODO Добавить отправку фото
-        //TODO Map для разных чатов
         //"https://proprikol.ru/wp-content/uploads/2021/08/kartinki-tokijskij-gul-11.jpg"
 
         //sendPhoto.setPhoto();
@@ -102,21 +104,42 @@ public class MessageHandler {
                 return sendMessage;
             case "События сегодня":
                 return getTodayEvents(chatId);
+            case "События завтра":
+                return getTomorrowEvents(chatId);
+            case "Найти по дате":
+                usersLastMessages.put(chatId,messageText);
+                sendMessage.setText("Введите дату в формате дд, дд.мм или дд.мм.гггг. \n-В 1-м и 2-м шаблоне месяц и год автоматически заменяются текущими."
+                + "\n-Поставьте знак < или > перед датой, чтобы найти события до/после введеной даты.");
+                return sendMessage;
             case "Вывести события":
                 return getAllEvents(chatId);
-            case "Найти события":
+            case "Найти по описанию":
                 usersLastMessages.put(chatId, messageText);
                 sendMessage.setText("Введите несколько букв, слово или несколько слов из описания события");
                 return sendMessage;
             default:
                 switch (usersLastMessages.get(chatId)){
-                    case "Найти события":
+                    case "Найти по описанию":
                         return findEventsByText(chatId, messageText);
+                    case "Найти по дате":
+                        messageText = messageText.trim();
+                        if (messageText.startsWith("<")){
+                            return findEventsBeforeDate(chatId, messageText.substring(messageText.indexOf('<') + 1).trim());
+                        } else if (messageText.startsWith(">")) {
+                            return findEventsAfterDate(chatId, messageText.substring(messageText.indexOf('>') + 1).trim());
+                        }
+                        return findEventsByDate(chatId, messageText);
+
                 }
                 if(usersIvents.get(chatId).getText().isEmpty()) {
                     if (usersLastMessages.get(chatId).equals("edit")){
                         PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                        dbAdapter.insertInto("text", messageText, usersIvents.get(chatId).getId());
+                        try {
+                            dbAdapter.insertInto("text", messageText, usersIvents.get(chatId).getId());
+                        } catch(SQLException e){
+                                logger.error("can not update field in database: ", e);
+                                return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                            }
                         return new SendMessage(chatId, "Изменено");
                     }
                     usersIvents.get(chatId).setText(messageText);
@@ -135,17 +158,23 @@ public class MessageHandler {
                     usersIvents.get(chatId).setDuration(duration);
                     if (usersLastMessages.get(chatId).equals("edit")){
                         PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                        dbAdapter.insertInto("duration", duration, usersIvents.get(chatId).getId());
+                        try {
+                            dbAdapter.insertInto("duration", duration, usersIvents.get(chatId).getId());
+                        } catch(SQLException e){
+                            logger.error("can not update field in database: ", e);
+                            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                        }
                         return new SendMessage(chatId, "Изменено");
                     }
                     try {
                         dbAdapter.addEvent(chatId,usersIvents.get(chatId));
-                    } catch (SQLException e) {
-                        logger.error("Ошибка при вызове addEvent",e);
-                        throw new RuntimeException(e);
+                    } catch(SQLException e){
+                        logger.error("can not insert data into database: ", e);
+                        return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
                     }
                     usersIvents.get(chatId).clear();
-                    return new SendMessage(chatId,"Событие создано");
+                    String event = usersIvents.get(chatId).toString();
+                    return new SendMessage(chatId,"Событие создано:\n " + event);
                 }
                 break;
         }
@@ -166,15 +195,28 @@ public class MessageHandler {
         String response = "";
         Iterable<Event> events = null;
         try {
-            events = dbAdapter.getTodayEvents(LocalDate.now());
-        } catch (SQLException e) {
-            System.err.println("Error in handler");
-            throw new RuntimeException(e);
+            events = dbAdapter.getEventsByDate(LocalDate.now());
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
         }
-        for (Event e:events) {
-            response = response + e.toString() + "\n";
-        }
+        response = eventsToString(events);
         if (response.isEmpty()) response = "Список событий на сегодня пуст";
+        SendMessage sendMessage = new SendMessage(chatId, response);
+        return sendMessage;
+    }
+
+    private SendMessage getTomorrowEvents(String chatId) {
+        String response = "";
+        Iterable<Event> events = null;
+        try {
+            events = dbAdapter.getEventsByDate(LocalDate.now().plusDays(1));
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+        }
+        response = eventsToString(events);
+        if (response.isEmpty()) response = "Список событий на завтра пуст";
         SendMessage sendMessage = new SendMessage(chatId, response);
         return sendMessage;
     }
@@ -183,28 +225,69 @@ public class MessageHandler {
         Iterable<Event> events = null;
         try {
             events = dbAdapter.getAllEvents();
-        } catch (SQLException e) {
-            System.err.println("Error in handler");
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
         }
         String response = "";
+        response = eventsToStringWithDuration(events);
 
-        for (Event e:events) {
-            response = response + e.toString() + "\n";
-        }
         if (response.isEmpty()) response = "Список событий пуст";
         SendMessage sendMessage = new SendMessage(chatId, response);
         return sendMessage;
     }
 
+    private String eventsToString(Iterable<Event> events){
+        String response = "";
+        int currentMonth = 0;
+        int currentDay = 0;
+
+        for (Event e:events) {
+            if (e.getDateTime().getDayOfMonth() != currentDay){
+                if(e.getDateTime().getMonthValue() != currentMonth){
+                    currentMonth = e.getDateTime().getMonthValue();
+                }
+                currentDay = e.getDateTime().getDayOfMonth();
+                Month jan = Month.of(currentMonth);
+                jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"));
+                response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
+            }
+
+            response = response + e.toStringWithoutDuration() + "\n";
+        }
+        return response;
+    }
+
+    private String eventsToStringWithDuration(Iterable<Event> events){
+        String response = "";
+        int currentMonth = 0;
+        int currentDay = 0;
+
+        for (Event e:events) {
+            if (e.getDateTime().getDayOfMonth() != currentDay){
+                if(e.getDateTime().getMonthValue() != currentMonth){
+                    currentMonth = e.getDateTime().getMonthValue();
+                }
+                currentDay = e.getDateTime().getDayOfMonth();
+                Month jan = Month.of(currentMonth);
+                jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"));
+                response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
+            }
+
+            response = response + e.toStringWithoutDate() + "\n";
+        }
+        return response;
+    }
+
     private SendMessage findEventsByText(String chatId, String text) {
         String response = "";
-        Iterable<Event> events = null;
+        Iterable<Event> events;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
-            events = dbAdapter.findEventsByText(text);
-        } catch (SQLException e) {
-            logger.error("Text message handler error:", e);
-            throw new RuntimeException(e);
+            events = dbAdapter.getEventsByText(text);
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
         }
         for (Event e:events) {
             SendMessage sendMessage = new SendMessage(chatId,e.toString());
@@ -219,10 +302,122 @@ public class MessageHandler {
 
     }
 
-    private SendMessage getStartMessage(String chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, "Button");
-        sendMessage.enableMarkdown(true);
-        sendMessage.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard());
+    private SendMessage findEventsByDate(String chatId, String text) {
+        String response = "";
+        LocalDate dateTime;
+        try {
+            dateTime = stringToDate(text);
+        }catch (NumberFormatException e) {
+            SendMessage sm = new SendMessage();
+            sm.setChatId(chatId);
+            sm.setText("Дата не соответствует шаблону или выходит за допустимые границы");
+            return sm;
+        }
+        Iterable<Event> events = null;
+        ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
+        try {
+            events = dbAdapter.getEventsByDate(dateTime);
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+        }
+        for (Event e:events) {
+            SendMessage sendMessage = new SendMessage(chatId,e.toString());
+            sendMessage.setReplyMarkup(inlineKeyboardMaker.getEventActionsButtons("/",e.getId()));
+            botApiMethods.add(sendMessage);
+        }
+        botBody.executeMethods(botApiMethods);
+        response = "Выберите действие";
+        if (botApiMethods.isEmpty()) response = "Не найдено событий";
+        SendMessage sendMessage = new SendMessage(chatId, response);
         return sendMessage;
+
     }
+
+    private SendMessage findEventsBeforeDate(String chatId, String text) {
+        String response = "";
+        LocalDate dateTime;
+        try {
+            dateTime = stringToDate(text);
+        }catch (NumberFormatException e) {
+            SendMessage sm = new SendMessage();
+            sm.setChatId(chatId);
+            sm.setText("Дата не соответствует шаблону или выходит за допустимые границы");
+            return sm;
+        }
+        Iterable<Event> events = null;
+        ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
+        try {
+            events = dbAdapter.getEventsBeforeOrAfterDate(dateTime, "<");
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+        }
+        for (Event e:events) {
+            SendMessage sendMessage = new SendMessage(chatId,e.toString());
+            sendMessage.setReplyMarkup(inlineKeyboardMaker.getEventActionsButtons("/",e.getId()));
+            botApiMethods.add(sendMessage);
+        }
+        botBody.executeMethods(botApiMethods);
+        response = "Выберите действие";
+        if (botApiMethods.isEmpty()) response = "Не найдено событий";
+        SendMessage sendMessage = new SendMessage(chatId, response);
+        return sendMessage;
+
+    }
+
+    private SendMessage findEventsAfterDate(String chatId, String text) {
+        String response = "";
+        LocalDate dateTime;
+        try {
+            dateTime = stringToDate(text);
+        }catch (NumberFormatException e) {
+                SendMessage sm = new SendMessage();
+                sm.setChatId(chatId);
+                sm.setText("Дата не соответствует шаблону или выходит за допустимые границы");
+                return sm;
+            }
+        Iterable<Event> events = null;
+        ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
+        try {
+            events = dbAdapter.getEventsBeforeOrAfterDate(dateTime, ">");
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+        }
+        for (Event e:events) {
+            SendMessage sendMessage = new SendMessage(chatId,e.toString());
+            sendMessage.setReplyMarkup(inlineKeyboardMaker.getEventActionsButtons("/",e.getId()));
+            botApiMethods.add(sendMessage);
+        }
+        botBody.executeMethods(botApiMethods);
+        response = "Выберите действие";
+        if (botApiMethods.isEmpty()) response = "Не найдено событий";
+        SendMessage sendMessage = new SendMessage(chatId, response);
+        return sendMessage;
+
+    }
+
+    private LocalDate stringToDate(String text) throws NumberFormatException{
+         LocalDate dateTime = LocalDate.now();
+         if (text.isEmpty()) return dateTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        try {
+            dateTime = LocalDate.parse(text, formatter);
+        }catch (DateTimeParseException e){
+            String withYearAdded = "";
+            withYearAdded = text + "." + dateTime.getYear();
+            try{
+                dateTime = LocalDate.parse(withYearAdded, formatter);
+            }catch (DateTimeParseException e2) {
+                try{
+                    dateTime = dateTime.withDayOfMonth(Integer.parseInt(text));
+                } catch (NumberFormatException e3) {
+                    throw e3;
+                }
+            }
+        }
+        return dateTime;
+    }
+
 }

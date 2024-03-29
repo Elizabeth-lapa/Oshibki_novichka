@@ -76,22 +76,23 @@ rowList.add(keyboardButtonsRow1);
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup getCalendarMinuteButtons(String prefix) {
+    public InlineKeyboardMarkup getCalendarMinuteButtons(String prefix, int minutesRange) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-        keyboardButtonsRow.add(getButton(
-                Integer.toString(0),
-                prefix + "minute:" + Integer.toString(0)
-        ));
-        for (int i = 1; i < 60; i++) {
+
+        for (int i = minutesRange * 10; i < minutesRange * 10 + 5; i++) {
             keyboardButtonsRow.add(getButton(
                     Integer.toString(i),
                     prefix + "minute:" + Integer.toString(i)
             ));
-            if((i+1) % 6 == 0){
-                rowList.add(keyboardButtonsRow);
-                keyboardButtonsRow = new ArrayList<>();
-            }
+        }
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow = new ArrayList<>();
+        for (int i = minutesRange * 10 + 5; i < minutesRange * 10 + 10; i++) {
+            keyboardButtonsRow.add(getButton(
+                    Integer.toString(i),
+                    prefix + "minute:" + Integer.toString(i)
+            ));
         }
         rowList.add(keyboardButtonsRow);
 
@@ -188,6 +189,44 @@ rowList.add(keyboardButtonsRow1);
                 prefix + "edit:" + eventID
         ));
 
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getMinutesRangeButtons(String prefix) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+
+        keyboardButtonsRow.add(getButton(
+                "0-9",
+                prefix + "minutesRange:0"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "10-19",
+                prefix + "minutesRange:1"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "20-29",
+                prefix + "minutesRange:2"
+        ));
+
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+        keyboardButtonsRow.add(getButton(
+                "30-39",
+                prefix + "minutesRange:3"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "40-49",
+                prefix + "minutesRange:4"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "50-59",
+                prefix + "minutesRange:5"
+        ));
         rowList.add(keyboardButtonsRow);
         inlineKeyboardMarkup.setKeyboard(rowList);
         return inlineKeyboardMarkup;

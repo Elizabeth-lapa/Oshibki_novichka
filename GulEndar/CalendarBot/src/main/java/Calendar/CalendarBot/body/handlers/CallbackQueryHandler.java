@@ -12,10 +12,14 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+
+//TODO Изменение дней в месяце при изменении месяца месяца
+//TODO перевести все на switch
 
 @Component
 public class CallbackQueryHandler {
@@ -47,34 +51,24 @@ public class CallbackQueryHandler {
 
 
         if (data.contains("/day:")) {
-            int day = Integer.parseInt(data.substring(5));
-            usersIvents.get(chatId).setDayOfMonth(day);
-            if (usersLastMessages.get(chatId).equals("edit")){
-                PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
-                return new SendMessage(chatId, "Изменено");
-            }
-            SendMessage sm = new SendMessage();
-            sm.setChatId(chatId);
-            sm.setReplyMarkup(inlineKeyboardMaker.getCalendarHourButtons("/"));
-            sm.setText("Выберите час");
-            return sm;
-
+            return dayHandle(chatId,data);
         } else if (data.contains("/delete:")) {
-                PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                String id = data.substring(data.indexOf(':') + 1);
-                dbAdapter.deleteByID(id);
-            SendMessage sm = new SendMessage();
-                sm.setChatId(chatId);
-                sm.setText("Событие удалено");
-                return sm;
-
+                return  deleteHandle(chatId,data);
             }else if (data.contains("/month:")) {
             int month = Integer.parseInt(data.substring(7));
+            try{
             usersIvents.get(chatId).setMonth(month);
+            }catch (DateTimeException e) {
+                return new SendMessage(chatId,"Неправильный формат месяца");
+            }
             if (usersLastMessages.get(chatId).equals("edit")){
                 PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                try {
+                    dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                }catch(SQLException e){
+                    logger.error("can not update field in database: ", e);
+                    return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                }
                 return new SendMessage(chatId, "Изменено");
             }
             SendMessage sm = new SendMessage();
@@ -86,24 +80,50 @@ public class CallbackQueryHandler {
 
         }else if (data.contains("/hour:")) {
             int hour = Integer.parseInt(data.substring(6));
-            usersIvents.get(chatId).setHour(hour);
-            if (usersLastMessages.get(chatId).equals("edit")){
+            try {
+                usersIvents.get(chatId).setHour(hour);
+            } catch (DateTimeException e) {
+                return new SendMessage(chatId, "Неправильный формат часа");
+            }
+            if (usersLastMessages.get(chatId).equals("edit")) {
                 PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                try {
+                    dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                } catch (SQLException e) {
+                    logger.error("can not update field in database: ", e);
+                    return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                }
                 return new SendMessage(chatId, "Изменено");
             }
             SendMessage sm = new SendMessage();
-            sm.setReplyMarkup(inlineKeyboardMaker.getCalendarMinuteButtons("/"));
+            sm.setReplyMarkup(inlineKeyboardMaker.getMinutesRangeButtons("/"));
             sm.setChatId(chatId);
+            sm.setText("Выберите диапозон минут");
+            return sm;
+
+        } else if (data.contains("/minutesRange:")) {
+            int minutesRange = Integer.parseInt(data.substring(data.indexOf(':') + 1));
+            SendMessage sm = new SendMessage();
+            sm.setChatId(chatId);
+            sm.setReplyMarkup(inlineKeyboardMaker.getCalendarMinuteButtons("/", minutesRange));
             sm.setText("Выберите минуты");
             return sm;
 
-        } else if (data.contains("/minute:")) {
+    } else if (data.contains("/minute:")) {
             int minute = Integer.parseInt(data.substring(data.indexOf(':') + 1));
+            try{
             usersIvents.get(chatId).setMinute(minute);
+            }catch (DateTimeException e) {
+                return new SendMessage(chatId,"Неправильный формат минут");
+            }
             if (usersLastMessages.get(chatId).equals("edit")){
                 PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                try {
+                    dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+                }catch(SQLException e){
+                    logger.error("can not update field in database: ", e);
+                    return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                }
                 return new SendMessage(chatId, "Изменено");
             }
             SendMessage sm = new SendMessage();
@@ -117,26 +137,32 @@ public class CallbackQueryHandler {
             if (duration == -1) {
                 SendMessage sm = new SendMessage();
                 sm.setChatId(chatId);
-                sm.setText("Введите длительность:");
+                sm.setText("Выберите длительность:");
                 return sm;
             }
 
             if (usersLastMessages.get(chatId).equals("edit")){
                 PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
-                dbAdapter.insertInto("duration",duration, usersIvents.get(chatId).getId());
+                try {
+                    dbAdapter.insertInto("duration", duration, usersIvents.get(chatId).getId());
+                }catch(SQLException e){
+                    logger.error("can not update field in database: ", e);
+                    return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                }
                 return new SendMessage(chatId, "Изменено");
             }
 
             PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
             try {
                 dbAdapter.addEvent(chatId,usersIvents.get(chatId));
-            } catch (SQLException e) {
-               logger.error("Ошибка при вызове addEvent",e);
-                throw new RuntimeException(e);
+            } catch(SQLException e){
+                logger.error("can not insert data in database: ", e);
+                return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
             }
+            String event = usersIvents.get(chatId).toString();
             SendMessage sm = new SendMessage();
             sm.setChatId(chatId);
-            sm.setText("Событие создано");
+            sm.setText("Событие создано:\n " + event);
             return sm;
 
         }else if (data.contains("/edit:")) {
@@ -148,10 +174,10 @@ public class CallbackQueryHandler {
                 id.substring(id.indexOf(':') + 1);
                 PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
                 try {
-                    usersIvents.get(chatId).setEvent(dbAdapter.findByID(id.substring(id.indexOf(':') + 1)));
-                } catch (SQLException e) {
-                    logger.error("Ошибка в получении объекта из базы данных:", e);
-                    throw new RuntimeException(e);
+                    usersIvents.get(chatId).setEvent(dbAdapter.getByID(id.substring(id.indexOf(':') + 1)));
+                } catch(SQLException e){
+                    logger.error("can not get records from database: ", e);
+                    return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
                 }
                 System.out.println(id.substring(0,id.indexOf(':')));
                 switch (id.substring(0,id.indexOf(':'))){
@@ -188,7 +214,7 @@ public class CallbackQueryHandler {
                         botApiMethodsTime.add(sendMessageTime);
                         sendMessageTime = new SendMessage();
                         sendMessageTime.setChatId(chatId);
-                        sendMessageTime.setReplyMarkup(inlineKeyboardMaker.getCalendarMinuteButtons("/"));
+                        sendMessageTime.setReplyMarkup(inlineKeyboardMaker.getMinutesRangeButtons("/"));
                         sendMessageTime.setText("Изменить минуты:");
                         botBody.executeMethods(botApiMethodsTime);
                         return sendMessageTime;
@@ -221,4 +247,45 @@ public class CallbackQueryHandler {
                 return new SendMessage(chatId, "Ошибка");
         }
     }
+    private SendMessage dayHandle(String chatId, String data){
+        int day = Integer.parseInt(data.substring(5));
+        try{
+            usersIvents.get(chatId).setDayOfMonth(day);
+        }catch (DateTimeException e) {
+            return new SendMessage(chatId,"Неправильный формат дня");
+        }
+        if (usersLastMessages.get(chatId).equals("edit")){
+            PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+            try {
+                dbAdapter.insertInto(usersIvents.get(chatId).getDateTime(), usersIvents.get(chatId).getId());
+            }catch(SQLException e){
+                logger.error("can not update field in database: ", e);
+                return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+            }
+            return new SendMessage(chatId, "Изменено");
+        }
+        SendMessage sm = new SendMessage();
+        sm.setChatId(chatId);
+        sm.setReplyMarkup(inlineKeyboardMaker.getCalendarHourButtons("/"));
+        sm.setText("Выберите час");
+        return sm;
+
+    }
+
+    private SendMessage deleteHandle(String chatId, String data){
+        PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
+        String id = data.substring(data.indexOf(':') + 1);
+        try {
+            dbAdapter.deleteByID(id);
+        }catch(SQLException e){
+            logger.error("can not delete field from database: ", e);
+            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+        }
+        SendMessage sm = new SendMessage();
+        sm.setChatId(chatId);
+        sm.setText("Событие удалено");
+        return sm;
+
+    }
+
 }

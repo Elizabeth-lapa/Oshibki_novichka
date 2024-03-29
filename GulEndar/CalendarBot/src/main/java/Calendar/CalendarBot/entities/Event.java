@@ -4,8 +4,10 @@ package Calendar.CalendarBot.entities;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -15,7 +17,6 @@ public class Event {
     private int duration;
     private String text;
     private LocalDateTime dateTime;
-
     private String id = "";
 
     public Event(){
@@ -68,8 +69,12 @@ public class Event {
         return dateTime;
     }
 
-    public void setDayOfMonth(int dayOfMonth){
-        dateTime = dateTime.withDayOfMonth(dayOfMonth);
+    public void setDayOfMonth(int dayOfMonth) throws DateTimeException {
+        try {
+            dateTime = dateTime.withDayOfMonth(dayOfMonth);
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
     public String getId() {
@@ -80,25 +85,45 @@ public class Event {
         this.id = id;
     }
 
-    public void setMonth(int month){
+    public void setMonth(int month) throws DateTimeException{
+        try{
         dateTime = dateTime.withMonth(month);
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
-    public void setHour(int hour){
+    public void setHour(int hour)throws DateTimeException{
+        try{
         dateTime = dateTime.withHour(hour);
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
-    public void setMinute(int minute){
+    public void setMinute(int minute)throws DateTimeException{
+        try{
         dateTime = dateTime.withMinute(minute);
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
-    public void setTime(int hour, int minute){
+    public void setTime(int hour, int minute)throws DateTimeException{
+        try{
         dateTime = dateTime.withHour(hour);
         dateTime = dateTime.withMinute(minute);
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
     public void setDateTime(LocalDateTime dateTime) {
+        try{
         this.dateTime = dateTime;
+        }catch (DateTimeException e) {
+            throw e;
+        }
     }
 
     public void clear(){
@@ -106,9 +131,41 @@ public class Event {
         text = "";
     }
 
-    public String toString() {
-        String str =  dateTime.getDayOfMonth() + " " +dateTime.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, new Locale("ru")) + " " + dateTime.getHour() +":" +dateTime.getMinute() + " - ";
-         if (duration % 60 == 0) {
+
+    public String toStringWithoutDuration() {
+        //выводит: HH:mm - HH:mm текст
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String str = " ";
+        String endTime = dateTime.plusMinutes(duration).format(formatter);
+        str =  dateTime.format(formatter) + "-" + endTime + " ";
+        str = str + " - " + text;
+        return str;
+    }
+
+    public String toStringWithoutDate() {
+        //выводит: HH:mm длительность текст
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm ");
+
+        String str =  dateTime.format(formatter);
+        if (duration % 60 == 0) {
+            int hours = duration / 60;
+            str = str + hours + "ч";
+        } else if(duration > 60) {
+            int minutes = duration % 60;
+            int hours = duration / 60;
+            str = str + hours + "ч " + minutes + "мин";
+        } else str = str + duration +"мин";
+        str = str + " - " + text;
+        return str;
+    }
+
+    public String toString()
+    { //выводит: dd.MM HH:mm длительность текст
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm ");
+
+         String str =  dateTime.format(formatter);
+        if (duration % 60 == 0) {
             int hours = duration / 60;
             str = str + hours + "ч";
         } else if(duration > 60) {
