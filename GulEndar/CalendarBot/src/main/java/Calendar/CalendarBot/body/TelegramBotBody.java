@@ -26,17 +26,19 @@ public class TelegramBotBody extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     CallbackQueryHandler callbackQueryHandler;
     HashMap<String, Event> usersIvents;
+    HashMap<String, Event> usersEventInMemory;
     HashMap<String, String> usersLastMessages;
     PostgresDBAdapter dbAdapter;
     MessageHandler messageHandler;
     org.slf4j.Logger logger;
     public TelegramBotBody(BotConfig botConfig){
+        usersEventInMemory = new HashMap<>();
          usersIvents = new HashMap<>();
          usersLastMessages = new HashMap<>();
         this.botConfig = botConfig;
         dbAdapter = new PostgresDBAdapter();
-        callbackQueryHandler = new CallbackQueryHandler(usersIvents,this, usersLastMessages);
-        messageHandler = new MessageHandler(usersIvents, this, usersLastMessages);
+        callbackQueryHandler = new CallbackQueryHandler(usersIvents,this, usersLastMessages, usersEventInMemory);
+        messageHandler = new MessageHandler(usersIvents, this, usersLastMessages, usersEventInMemory);
         logger = org.slf4j.LoggerFactory.getLogger(TelegramBotBody.class);
     }
     @Override

@@ -61,12 +61,10 @@ public class PostgresDBAdapter {
                 ArrayList<Event> eventsList;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                String tableSql = "Select * from calendar.Event where DATE(datetime) = '" + date.format(formatter)+ "' AND chatID = '" + id + "' ORDER BY datetime;";
+                String tableSql = "Select * from calendar.Event where DATE(datetime) <= '" + date.format(formatter)+ "' AND DATE(datetime + make_interval(mins => duration)) >= '" + date.format(formatter)+ "' AND chatID = '" + id + "' ORDER BY datetime;";
                 ResultSet res = stmt.executeQuery(tableSql);
                 // Перебор строк с данными
                 eventsList = getEventsListFromResultSet(res);
-
-
                 res.close();
                 return eventsList;
             }
@@ -75,7 +73,6 @@ public class PostgresDBAdapter {
             logger.error("DB connection in interrupted with:", e);
             throw e;
         }
-
     }
 
     public ArrayList<Event> getEventsBeforeOrAfterDate(String chatId, LocalDate date, String lessORmoreSign) throws SQLException {
@@ -98,13 +95,12 @@ public class PostgresDBAdapter {
             logger.error("DB connection in interrupted with:", e);
             throw e;
         }
-
     }
 
     public void deleteByID(String id) throws SQLException {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
-                String tableSql = "delete from calendar.Event where id = '" + id+ "';";
+                String tableSql = "delete from calendar.Event where id = " + id+ ";";
                 stmt.executeUpdate(tableSql);
             }
 
@@ -118,7 +114,7 @@ public class PostgresDBAdapter {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
-                String tableSql = "update calendar.Event set " + parametr + " = " + value + " where id = '" + id + "';";
+                String tableSql = "update calendar.Event set " + parametr + " = " + value + " where id = " + id + ";";
                 stmt.executeUpdate(tableSql);
             }
         }catch (SQLException e){
@@ -131,7 +127,7 @@ public class PostgresDBAdapter {
         try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
             try (Statement stmt = DB_connection.createStatement()) {
 
-                String tableSql = "update calendar.Event set datetime = '" + dateTime + "' where id = '" + id + "';";
+                String tableSql = "update calendar.Event set datetime = '" + dateTime + "' where id = " + id + ";";
                 stmt.executeUpdate(tableSql);
             }
         }catch (SQLException e){
@@ -144,7 +140,7 @@ public class PostgresDBAdapter {
             try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
                 try (Statement stmt = DB_connection.createStatement()) {
 
-                    String tableSql = "update calendar.Event set " + parametr + " = '" + value + "' where id = '" + id + "';";
+                    String tableSql = "update calendar.Event set " + parametr + " = '" + value + "' where id = " + id + ";";
                     stmt.executeUpdate(tableSql);
                 }
             }catch (SQLException e){
@@ -158,7 +154,7 @@ public class PostgresDBAdapter {
             try (Statement stmt = DB_connection.createStatement()) {
                 ArrayList<Event> eventsList;
 
-                String tableSql = "Select * from calendar.Event where id = '" + id+ "';";
+                String tableSql = "Select * from calendar.Event where id = " + id+ ";";
                 ResultSet res = stmt.executeQuery(tableSql);
 
                 eventsList = getEventsListFromResultSet(res);
@@ -207,8 +203,89 @@ public class PostgresDBAdapter {
             logger.error("DB connection in interrupted with:", e);
             throw e;
         }
-
     }
+
+    public Event getFirstBeforeDate(String chatId, LocalDateTime dateTime, String id) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+                String tableSql = "Select * from calendar.Event where datetime <= '" + dateTime + "' AND id != "+id+" AND duration <= 1440 AND chatID = '" + chatId + "' order by datetime limit 1;";
+                ResultSet res = stmt.executeQuery(tableSql);
+                // Перебор строк с данными
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                return eventsList.get(0);
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
+    public Event getFirstAfterDate(String chatId, LocalDateTime dateTime,String id) throws SQLException, ArrayIndexOutOfBoundsException{
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+                String tableSql = "Select * from calendar.Event where date_trunc('second',datetime) >= date_trunc('second', TIMESTAMP '" + dateTime + "') AND id != "+id+" AND duration <= 1440 AND duration != 0 AND chatID = '" + chatId + "'order by datetime limit 1;";
+                ResultSet res = stmt.executeQuery(tableSql);
+                // Перебор строк с данными
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                Event event;
+                try {
+                    event = eventsList.get(0);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    logger.error("index out of bounds exception:", e);
+                    throw e;
+                }
+                return event;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
+    public ArrayList<Event> getConflictsBefore(String chatId, LocalDateTime dateTime) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+
+                String tableSql = "Select * from calendar.Event where datetime < '"+dateTime+"' AND datetime + make_interval(mins => duration) > '" + dateTime + "'AND chatID = '"+ chatId +"' AND duration <= 1440 AND duration != 0 ORDER BY datetime;";
+                ResultSet res = stmt.executeQuery(tableSql);
+                // Перебор строк с данными
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                return eventsList;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
+    public ArrayList<Event> getConflictsBetween(String chatId, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) throws SQLException {
+        try(Connection DB_connection = DriverManager.getConnection(DB_URL,USER ,PASS )){
+            try (Statement stmt = DB_connection.createStatement()) {
+                ArrayList<Event> eventsList;
+
+                String tableSql = "Select * from calendar.Event where (datetime >= '"+dateTimeStart+"'AND datetime < '" + dateTimeEnd +"') OR (datetime > '"+dateTimeStart+"'AND datetime <= '" +dateTimeEnd+"') AND chatID = '"+chatId+"' AND duration <= 1440 AND duration != 0 ORDER BY datetime;\n";
+                ResultSet res = stmt.executeQuery(tableSql);
+                // Перебор строк с данными
+                eventsList = getEventsListFromResultSet(res);
+                res.close();
+                return eventsList;
+            }
+
+        }catch (SQLException e){
+            logger.error("DB connection in interrupted with:", e);
+            throw e;
+        }
+    }
+
     private ArrayList<Event> getEventsListFromResultSet(ResultSet res){
         ArrayList<Event> eventsList = new ArrayList<>();
         while(true){

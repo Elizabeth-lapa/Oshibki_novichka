@@ -306,6 +306,31 @@ rowList.add(keyboardButtonsRow1);
         return inlineKeyboardMarkup;
     }
 
+    public InlineKeyboardMarkup getConflictsSolveButtons(String prefix) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+
+
+        keyboardButtonsRow.add(getButton(
+                "Игнорировать",
+                prefix + "ignore"
+        ));
+        keyboardButtonsRow.add(getButton(
+                "Разрешить автоматически",
+                prefix + "autoresolve"
+        ));
+        rowList.add(keyboardButtonsRow);
+        keyboardButtonsRow= new ArrayList<>();
+        keyboardButtonsRow.add(getButton(
+                "Попробовать снова",
+                prefix + "tryagain"
+        ));
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
     private InlineKeyboardButton getButton(String buttonName, String buttonCallBackData) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(buttonName);

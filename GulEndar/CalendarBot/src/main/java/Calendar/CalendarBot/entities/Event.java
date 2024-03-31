@@ -160,6 +160,16 @@ public class Event {
         return str;
     }
 
+    public String toStringStartAndEndDates() {
+        //выводит: HH:mm длительность текст
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm");
+        String startDate = dateTime.format(formatter);
+        LocalDateTime endDateTime = dateTime.plusMinutes(duration);
+        String endDate = endDateTime.format(formatter);
+        String res = startDate + " - " + endDate + ": " + text;
+        return res;
+    }
+
     public String toString()
     { //выводит: dd.MM HH:mm длительность текст
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm ");

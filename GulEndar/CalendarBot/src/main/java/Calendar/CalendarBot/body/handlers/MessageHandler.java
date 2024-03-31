@@ -29,11 +29,14 @@ public class MessageHandler {
     InlineKeyboardMaker inlineKeyboardMaker;
     HashMap<String, Event> usersIvents;
     HashMap<String, String> usersLastMessages;
+    HashMap<String, Event> usersEventInMemory;
+
     org.slf4j.Logger logger;
 
     PostgresDBAdapter dbAdapter;
-    public MessageHandler(HashMap<String, Event> usersIvents, TelegramBotBody botBody,HashMap<String, String> usersLastMessages){
+    public MessageHandler(HashMap<String, Event> usersIvents, TelegramBotBody botBody,HashMap<String, String> usersLastMessages,HashMap<String, Event> usersEventInMemory ){
         this.botBody = botBody;
+        this.usersEventInMemory = usersEventInMemory;
         dbAdapter = new PostgresDBAdapter();
         logger = org.slf4j.LoggerFactory.getLogger(PostgresDBAdapter.class);
         this.usersLastMessages = usersLastMessages;
@@ -51,13 +54,8 @@ public class MessageHandler {
         String answerText;
 
         System.out.println(messageText);
-
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(chatId);
         //TODO Добавить отправку фото
-        //"https://proprikol.ru/wp-content/uploads/2021/08/kartinki-tokijskij-gul-11.jpg"
 
-        //sendPhoto.setPhoto();
 
         if (!usersIvents.containsKey(chatId)) usersIvents.put(chatId,new Event());
         if (!usersLastMessages.containsKey(chatId)) usersLastMessages.put(chatId,"start");
@@ -69,10 +67,11 @@ public class MessageHandler {
             case "/start":
                 if (!usersIvents.containsKey(chatId)) usersIvents.put(chatId,new Event());
                 if (!usersLastMessages.containsKey(chatId)) usersLastMessages.put(chatId,"start");
-                 answerText = "Здравствуйте, " + message.getChat().getFirstName();
-            sendMessage.setText(answerText);
-            sendMessage.setReplyMarkup(replyKeyboardMaker.getCalendarMainMenuKeyboard());
-            return sendMessage;
+                answerText = "Здравствуйте, " + message.getChat().getFirstName() + ". Наш бот - это современный календарь-бот, он может быть всем: "
+                        +"от простого списка, до персонального менеджера. Только в телеграм.";
+                sendMessage.setText(answerText);
+                sendMessage.setReplyMarkup(replyKeyboardMaker.getCalendarMainMenuKeyboard());
+                return sendMessage;
             case "/гуль":
                 sendMessage.setText("Who are you?(Кто вы по жизни?)");
                 sendMessage.setReplyMarkup(replyKeyboardMaker.getMainMenuKeyboard());
@@ -107,9 +106,9 @@ public class MessageHandler {
             case "Найти по дате":
                 usersLastMessages.put(chatId,messageText);
                 sendMessage.setText("Введите дату в формате дд, дд.мм или дд.мм.гггг. \n+В 1-м и 2-м шаблоне месяц и год автоматически заменяются текущими."
-                + "\n+Поставьте знак < или > перед датой, чтобы найти события до/после введеной даты.");
+                        + "\n+Поставьте знак < или > перед датой, чтобы найти события до/после введеной даты.");
                 return sendMessage;
-            case "Вывести события":
+            case "Все события":
                 return getAllEvents(chatId);
             case "Найти по описанию":
                 usersLastMessages.put(chatId, messageText);
@@ -127,22 +126,22 @@ public class MessageHandler {
                             return findEventsAfterDate(chatId, messageText.substring(messageText.indexOf('>') + 1).trim());
                         }
                         return findEventsByDate(chatId, messageText);
-
                 }
                 if(usersIvents.get(chatId).getText().isEmpty()) {
                     if (usersLastMessages.get(chatId).equals("edit")){
                         PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
                         try {
+
                             dbAdapter.insertInto("text", messageText, usersIvents.get(chatId).getId());
                         } catch(SQLException e){
-                                logger.error("can not update field in database: ", e);
-                                return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
-                            }
+                            logger.error("can not update field in database: ", e);
+                            return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                        }
                         return new SendMessage(chatId, "Изменено");
                     }
                     usersIvents.get(chatId).setText(messageText);
                     sendMessage.setReplyMarkup(inlineKeyboardMaker.getDefaultDurationButtons("/"));
-                    sendMessage.setText("Введите длительность(мин)");
+                    sendMessage.setText("Выберите длительность");
                     return sendMessage;
                 }
                 if(usersIvents.get(chatId).getDuration() < 0) {
@@ -154,6 +153,18 @@ public class MessageHandler {
                         return sendMessage;
                     }
                     usersIvents.get(chatId).setDuration(duration);
+                    //TODO сюда проверку конфликтов
+                    ArrayList<Event> events;
+                    try {
+                        events = haveConflicts(chatId);
+                    }catch (SQLException e){
+                        sendMessage.setText("Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
+                        return sendMessage;
+                    }
+                    if (!events.isEmpty() && (usersIvents.get(chatId).getDuration() != 0)){
+                        usersEventInMemory.put(chatId,usersIvents.get(chatId));
+                        return handleConflicts(chatId,events);
+                    }
                     if (usersLastMessages.get(chatId).equals("edit")){
                         PostgresDBAdapter dbAdapter = new PostgresDBAdapter();
                         try {
@@ -170,8 +181,8 @@ public class MessageHandler {
                         logger.error("can not insert data into database: ", e);
                         return new SendMessage(chatId, "Не удается подключиться к базе данных. Пожалуйста, попробуйте позже");
                     }
-                    usersIvents.get(chatId).clear();
                     String event = usersIvents.get(chatId).toString();
+                    usersIvents.get(chatId).clear();
                     return new SendMessage(chatId,"Событие создано:\n " + event);
                 }
                 break;
@@ -201,6 +212,7 @@ public class MessageHandler {
         response = eventsToString(events);
         if (response.isEmpty()) response = "Список событий на сегодня пуст";
         SendMessage sendMessage = new SendMessage(chatId, response);
+        sendMessage.enableMarkdown(true);
         return sendMessage;
     }
 
@@ -216,6 +228,8 @@ public class MessageHandler {
         response = eventsToString(events);
         if (response.isEmpty()) response = "Список событий на завтра пуст";
         SendMessage sendMessage = new SendMessage(chatId, response);
+        sendMessage.enableMarkdown(true);
+
         return sendMessage;
     }
 
@@ -232,6 +246,7 @@ public class MessageHandler {
 
         if (response.isEmpty()) response = "Список событий пуст";
         SendMessage sendMessage = new SendMessage(chatId, response);
+        sendMessage.enableMarkdown(true);
         return sendMessage;
     }
 
@@ -248,10 +263,13 @@ public class MessageHandler {
                 currentDay = e.getDateTime().getDayOfMonth();
                 Month jan = Month.of(currentMonth);
                 jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"));
-                response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
+                LocalDate currentDate = LocalDate.now();
+                if(currentDate.getDayOfMonth() == currentDay && currentDate.getMonthValue() == currentMonth) response = response +"\n*"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "*\n";
+                else response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
             }
 
-            response = response + e.toStringWithoutDuration() + "\n";
+            if(e.getDateTime().toLocalDate().equals(e.getDateTime().plusMinutes(e.getDuration()).toLocalDate())) response = response + e.toStringWithoutDuration() + "\n";
+            else response = response + e.toStringStartAndEndDates() + "\n";
         }
         return response;
     }
@@ -269,10 +287,12 @@ public class MessageHandler {
                 currentDay = e.getDateTime().getDayOfMonth();
                 Month jan = Month.of(currentMonth);
                 jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"));
-                response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
+                LocalDate currentDate = LocalDate.now();
+                if(currentDate.getDayOfMonth() == currentDay && currentDate.getMonthValue() == currentMonth)response = response +"\n*_"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "*\n";
+                else response = response +"\n"+ jan.getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))+ " " +currentDay  + "\n";
             }
-
-            response = response + e.toStringWithoutDate() + "\n";
+            if(e.getDateTime().toLocalDate().equals(e.getDateTime().plusMinutes(e.getDuration()).toLocalDate())) response = response + e.toStringWithoutDate() + "\n";
+            else response = response + e.toStringStartAndEndDates() + "\n";
         }
         return response;
     }
@@ -370,11 +390,11 @@ public class MessageHandler {
         try {
             dateTime = stringToDate(text);
         }catch (NumberFormatException e) {
-                SendMessage sm = new SendMessage();
-                sm.setChatId(chatId);
-                sm.setText("Дата не соответствует шаблону или выходит за допустимые границы");
-                return sm;
-            }
+            SendMessage sm = new SendMessage();
+            sm.setChatId(chatId);
+            sm.setText("Дата не соответствует шаблону или выходит за допустимые границы");
+            return sm;
+        }
         Iterable<Event> events = null;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
         try {
@@ -397,8 +417,8 @@ public class MessageHandler {
     }
 
     private LocalDate stringToDate(String text) throws NumberFormatException{
-         LocalDate dateTime = LocalDate.now();
-         if (text.isEmpty()) return dateTime;
+        LocalDate dateTime = LocalDate.now();
+        if (text.isEmpty()) return dateTime;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
             dateTime = LocalDate.parse(text, formatter);
@@ -418,4 +438,34 @@ public class MessageHandler {
         return dateTime;
     }
 
+    private ArrayList<Event> haveConflicts(String chatId) throws SQLException{
+        ArrayList<Event> events = null;
+        ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
+        try {
+            events = dbAdapter.getConflictsBefore(chatId,usersIvents.get(chatId).getDateTime());
+            events.addAll(dbAdapter.getConflictsBetween(chatId,usersIvents.get(chatId).getDateTime(),usersIvents.get(chatId).getDateTime().plusMinutes(usersIvents.get(chatId).getDuration())));
+        } catch(SQLException e){
+            logger.error("can not get records from database: ", e);
+            throw e;
+        }
+
+        return events;
+    }
+
+    private SendMessage handleConflicts(String chatId,ArrayList<Event> events){
+        String response = "";
+        ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
+        for (Event e:events) {
+            SendMessage sendMessage = new SendMessage(chatId,e.toStringStartAndEndDates());
+            sendMessage.setReplyMarkup(inlineKeyboardMaker.getEventActionsButtons("/",e.getId()));
+            botApiMethods.add(sendMessage);
+        }
+        botBody.executeMethods(botApiMethods);
+        response = "Событие вызывает конфликты\n" + usersIvents.get(chatId).toStringStartAndEndDates() + "\n";
+        response = response + "Разрешите конфликты вручную и попробуйте снова или выберите одно из других действий:";
+        if (botApiMethods.isEmpty()) response = "Не найдено конфликтов";
+        SendMessage sendMessage = new SendMessage(chatId, response);
+        sendMessage.setReplyMarkup(inlineKeyboardMaker.getConflictsSolveButtons("/"));
+        return sendMessage;
+    }
 }
