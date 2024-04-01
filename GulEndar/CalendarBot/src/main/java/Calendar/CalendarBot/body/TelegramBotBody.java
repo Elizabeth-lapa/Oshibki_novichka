@@ -54,6 +54,8 @@ public class TelegramBotBody extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
+        System.out.println(update.getMessage());
+
     //TODO обработка дат типа 1990 (могут сломаться)
 
         if (update.hasCallbackQuery()) {
@@ -86,7 +88,6 @@ public class TelegramBotBody extends TelegramLongPollingBot {
                 execute(method);
             } catch (TelegramApiException e) {
                 logger.error("Many methods execute error:", e);
-                throw new RuntimeException(e);
             }
         }
     }
