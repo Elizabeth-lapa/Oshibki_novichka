@@ -840,3 +840,7 @@
 2024-03-31 22:10:28 Calendar.CalendarBot.body.PostgresDBAdapter INFO first autoresolve completed[01.01 02:00 5мин - Событие 4, 01.01 02:05 5мин - Событие 3, 01.01 02:10 5мин - Событие 2] 
 2024-03-31 22:10:28 Calendar.CalendarBot.body.PostgresDBAdapter INFO Conflicts after date solving... 
 2024-03-31 22:10:32 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Дмитрий 1093937171 
+2024-03-31 22:30:57 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 7480 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-03-31 22:30:57 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-03-31 22:30:59 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.677 seconds (process running for 4.163) 
+2024-03-31 22:31:11 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Дмитрий 1093937171 
