@@ -25,6 +25,13 @@ public class Event {
         dateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.of("UTC+3")));
     }
 
+    public Event(String id, String text, int duration) {
+        this.id = id;
+        this.duration = duration;
+        this.text = text;
+        dateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.of("UTC+3")));
+    }
+
     public Event(String id, String text, LocalDateTime dateTime,int duration) {
         this.id = id;
         this.duration = duration;

@@ -154,7 +154,7 @@ public class CallbackQueryHandler {
         }
         SendMessage sm = new SendMessage();
         sm.setReplyMarkup(inlineKeyboardMaker.getCalendarDaysButtons("/",
-                usersIvents.get(chatId).getDateTime().getMonth().length(false)));
+                usersIvents.get(chatId).getDateTime().getMonth().length(true)));
         sm.setChatId(chatId);
         sm.setText("Выберите день");
         return sm;

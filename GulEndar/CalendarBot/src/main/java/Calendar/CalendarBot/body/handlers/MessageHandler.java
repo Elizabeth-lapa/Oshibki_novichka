@@ -53,9 +53,6 @@ public class MessageHandler {
         sendMessage.setChatId(chatId);
         String answerText;
 
-        System.out.println(messageText);
-        //TODO Добавить отправку фото
-
 
         if (!usersIvents.containsKey(chatId)) usersIvents.put(chatId,new Event());
         if (!usersLastMessages.containsKey(chatId)) usersLastMessages.put(chatId,"start");
@@ -233,7 +230,7 @@ public class MessageHandler {
         return sendMessage;
     }
 
-    private SendMessage getAllEvents(String chatId) {
+    public SendMessage getAllEvents(String chatId) {
         Iterable<Event> events = null;
         try {
             events = dbAdapter.getAllEvents(chatId);
@@ -297,7 +294,7 @@ public class MessageHandler {
         return response;
     }
 
-    private SendMessage findEventsByText(String chatId, String text) {
+    public SendMessage findEventsByText(String chatId, String text) {
         String response = "";
         Iterable<Event> events;
         ArrayList<BotApiMethod<?>> botApiMethods = new ArrayList<>();
@@ -467,5 +464,9 @@ public class MessageHandler {
         SendMessage sendMessage = new SendMessage(chatId, response);
         sendMessage.setReplyMarkup(inlineKeyboardMaker.getConflictsSolveButtons("/"));
         return sendMessage;
+    }
+
+    public void setUsersLastMessages(HashMap<String, String> usersLastMessages){
+        this.usersLastMessages = usersLastMessages;
     }
 }
