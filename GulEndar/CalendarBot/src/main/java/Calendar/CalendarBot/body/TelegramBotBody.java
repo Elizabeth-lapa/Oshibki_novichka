@@ -53,11 +53,7 @@ public class TelegramBotBody extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
-<<<<<<< HEAD
-=======
->>>>>>> 4651eb57670c69c6837f171a1b0da5e7bffab8c6
-
+        
     //TODO обработка дат типа 1990 (могут сломаться)
 
         if (update.hasCallbackQuery()) {
