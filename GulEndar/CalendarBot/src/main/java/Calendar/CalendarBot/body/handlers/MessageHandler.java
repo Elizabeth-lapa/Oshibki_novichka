@@ -45,6 +45,10 @@ public class MessageHandler {
         inlineKeyboardMaker = new InlineKeyboardMaker();
     }
 
+    public void setUsersLastMessages(HashMap<String, String> usersLastMessages){    
+        this.usersLastMessages = usersLastMessages;
+    }
+
     public BotApiMethod<?> answerMessage(Message message) {
         String chatId = message.getChatId().toString();
 
