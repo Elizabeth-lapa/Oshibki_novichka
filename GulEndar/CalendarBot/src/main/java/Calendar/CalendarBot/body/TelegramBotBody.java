@@ -8,6 +8,7 @@ import Calendar.CalendarBot.config.BotConfig;
 import Calendar.CalendarBot.entities.Event;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,24 +18,27 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class TelegramBotBody extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     CallbackQueryHandler callbackQueryHandler;
-
-    ReplyKeyboardMaker replyKeyboardMaker;
-    InlineKeyboardMaker inlineKeyboardMaker;
+    HashMap<String, Event> usersIvents;
+    HashMap<String, Event> usersEventInMemory;
+    HashMap<String, String> usersLastMessages;
     PostgresDBAdapter dbAdapter;
     MessageHandler messageHandler;
-    Event event;
     org.slf4j.Logger logger;
     public TelegramBotBody(BotConfig botConfig){
-        event = new Event();
+        usersEventInMemory = new HashMap<>();
+         usersIvents = new HashMap<>();
+         usersLastMessages = new HashMap<>();
         this.botConfig = botConfig;
         dbAdapter = new PostgresDBAdapter();
-        callbackQueryHandler = new CallbackQueryHandler(event);
-        messageHandler = new MessageHandler(event);
+        callbackQueryHandler = new CallbackQueryHandler(usersIvents,this, usersLastMessages, usersEventInMemory);
+        messageHandler = new MessageHandler(usersIvents, this, usersLastMessages, usersEventInMemory);
         logger = org.slf4j.LoggerFactory.getLogger(TelegramBotBody.class);
     }
     @Override
@@ -49,32 +53,41 @@ public class TelegramBotBody extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        
+    //TODO обработка дат типа 1990 (могут сломаться)
 
         if (update.hasCallbackQuery()) {
             //обработка команд с reply кнопок
-            logger.info("CallbackQuery received");
+            logger.info("CallbackQuery received from " + update.getCallbackQuery().getMessage().getChatId());
             CallbackQuery callbackQuery = update.getCallbackQuery();
             try {
                 execute(callbackQueryHandler.processCallbackQuery(callbackQuery));
             } catch (IOException e) {
-                logger.info("CallbackHandlerError:", e);
+                logger.error("CallbackHandlerError:", e);
                 throw new RuntimeException(e);
             } catch (TelegramApiException e) {
-                logger.error("Send message in CallbackHandler error:", e);
+                logger.error("Sending message in CallbackHandler call error:", e);
             }
 
         } else if(update.hasMessage() && update.getMessage().hasText()){
             //обработка текстовых сообщений
-            logger.info("text message received");
+            logger.info("text message received from " + update.getMessage().getChat().getFirstName() +" " +  update.getMessage().getChatId());
             try{
-                execute(messageHandler.answerMessage(update.getMessage()));
+                    execute(messageHandler.answerMessage(update.getMessage()));
             } catch (TelegramApiException e) {
-                logger.error("Send message in CallbackHandler error:", e);
+                logger.error("Sending message in TextMessageHandler error:", e);
             }
-
         }
+    }
 
+    public void executeMethods(ArrayList<BotApiMethod<?>> methodsForExecute){
+        for (BotApiMethod<?> method:methodsForExecute) {
+            try {
+                execute(method);
+            } catch (TelegramApiException e) {
+                logger.error("Many methods execute error:", e);
+            }
+        }
     }
 
     private void sendMessage(Long chatId, String textToSend){

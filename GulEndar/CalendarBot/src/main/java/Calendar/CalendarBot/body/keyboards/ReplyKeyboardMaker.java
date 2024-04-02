@@ -40,12 +40,20 @@ public class ReplyKeyboardMaker {
         row1.add(new KeyboardButton("Создать событие"));
 
         KeyboardRow row2 = new KeyboardRow();
-        row2.add(new KeyboardButton("Вывести события"));
+        row2.add(new KeyboardButton("Все события"));
 
+        KeyboardRow row3 = new KeyboardRow();
+        row3.add(new KeyboardButton("События сегодня"));
+        row3.add(new KeyboardButton("События завтра"));
+
+        KeyboardRow row4 = new KeyboardRow();
+        row4.add(new KeyboardButton("Найти по описанию"));
+        row4.add(new KeyboardButton("Найти по дате"));
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
-
+        keyboard.add(row3);
+        keyboard.add(row4);
         final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(keyboard);
         replyKeyboardMarkup.setSelective(true);

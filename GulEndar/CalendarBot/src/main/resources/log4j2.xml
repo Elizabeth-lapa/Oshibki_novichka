@@ -3,7 +3,7 @@
     <Appenders>
 
         <Console name="STDOUT">
-            <PatternLayout pattern="%d{MM-dd-yyyy} %-5level - %msg%throwable{1}%n" />
+            <PatternLayout pattern="%d{MM-dd-yyyy} %logger{3} %-5level - %msg%throwable{1}%n" />
         </Console>
 
         <RollingFile name="roll-by-time"

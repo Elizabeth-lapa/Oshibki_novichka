@@ -1,93 +1,52 @@
-2024-03-18 10:25:22 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 12676 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
-2024-03-18 10:25:22 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
-2024-03-18 10:25:28 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 6.664 seconds (process running for 8.428) 
-2024-03-18 10:25:30 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:25:40 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:25:45 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:25:51 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:25:53 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:05 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:08 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:10 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:12 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:26:13 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:26:15 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:26:16 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:26:22 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:25 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:26:29 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:27:58 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:10 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:25 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:35 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:40 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:44 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:48 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:28:49 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:50 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:51 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:28:55 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:28:57 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:29:03 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:29:10 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:29:15 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:29:18 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:29:22 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:29:25 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:29:26 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:29:29 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:29:33 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:30:19 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:31:01 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:33:58 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 16704 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
-2024-03-18 10:33:58 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
-2024-03-18 10:34:04 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 6.277 seconds (process running for 7.564) 
-2024-03-18 10:34:08 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:38:29 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 2140 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
-2024-03-18 10:38:29 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
-2024-03-18 10:38:32 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 3.157 seconds (process running for 4.392) 
-2024-03-18 10:38:43 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:05 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:16 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:21 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:24 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:40:26 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:40:30 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:33 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:40:35 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:40:40 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:41:15 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:41:18 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:41:22 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:41:24 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:41:25 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:41:27 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:42:03 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:42:08 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:42:11 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:44:04 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:44:07 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:45:31 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:45:37 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:45:51 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:48:03 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Read timed out org.apache.http.conn.ConnectTimeoutException: Connect to api.telegram.org:443 [api.telegram.org/149.154.167.220] failed: Read timed out
-2024-03-18 10:51:56 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:54:36 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:54:42 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:54:44 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:56:33 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 17260 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
-2024-03-18 10:56:33 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
-2024-03-18 10:56:35 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 3.118 seconds (process running for 4.397) 
-2024-03-18 10:57:18 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:21 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:24 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:57:28 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:57:32 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:35 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:38 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:41 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
-2024-03-18 10:57:43 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received 
-2024-03-18 10:59:04 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 1592 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
-2024-03-18 10:59:04 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
-2024-03-18 10:59:08 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 4.683 seconds (process running for 6.234) 
-2024-03-18 11:08:00 Calendar.CalendarBot.body.TelegramBotBody INFO text message received 
+2024-04-01 13:40:05 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 7052 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-04-01 13:40:05 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-04-01 13:40:08 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.933 seconds (process running for 4.794) 
+2024-04-01 13:40:25 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Дмитрий 1093937171 
+2024-04-01 13:45:23 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 17280 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-04-01 13:45:23 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-04-01 13:45:25 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.614 seconds (process running for 3.983) 
+2024-04-01 13:45:38 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Дмитрий 1093937171 
+2024-04-01 15:32:29 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 15:32:29 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 15:32:29 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter INFO Schema and table was created 
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter INFO Schema and table was created 
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter INFO Schema and table was created 
+2024-04-01 15:33:17 Calendar.CalendarBot.body.PostgresDBAdapter ERROR DB connection in interrupted with: org.postgresql.util.PSQLException: ОШИБКА: отношение "test.event" не существует
+  Позиция: 15
+2024-04-01 16:14:06 Calendar.CalendarBot.body.TelegramBotBody ERROR Many methods execute error: Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [404] Not Found
+2024-04-01 16:17:29 Calendar.CalendarBot.body.TelegramBotBody ERROR Many methods execute error: Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [404] Not Found
+2024-04-01 16:18:54 Calendar.CalendarBot.body.TelegramBotBody ERROR Many methods execute error: Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [404] Not Found
+2024-04-01 16:18:54 Calendar.CalendarBot.body.TelegramBotBody ERROR Many methods execute error: Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [404] Not Found
+2024-04-01 16:26:48 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 13000 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-04-01 16:26:48 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-04-01 16:26:51 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 3.979 seconds (process running for 5.939) 
+2024-04-01 16:26:52 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Алексей 5178356576 
+2024-04-01 16:26:52 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Алексей 5178356576 
+2024-04-01 16:27:02 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:27:16 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:27:23 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:15 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:18 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:25 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:32 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:36 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Алексей 5178356576 
+2024-04-01 16:28:41 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:28:52 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:34:28 Calendar.CalendarBot.CalendarBotApplication INFO Starting CalendarBotApplication using Java 20.0.1 with PID 22692 (C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot\target\classes started by deman in C:\Users\deman\Desktop\Programm ingenery Rogonov\Public repos\Oshibki_novichka\GulEndar\CalendarBot) 
+2024-04-01 16:34:28 Calendar.CalendarBot.CalendarBotApplication INFO No active profile set, falling back to 1 default profile: "default" 
+2024-04-01 16:34:30 Calendar.CalendarBot.CalendarBotApplication INFO Started CalendarBotApplication in 2.948 seconds (process running for 4.888) 
+2024-04-01 16:35:16 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:35:16 org.telegram.telegrambots.updatesreceivers.DefaultBotSession ERROR Cannot invoke "Calendar.CalendarBot.entities.Event.setMonth(int)" because the return value of "java.util.HashMap.get(Object)" is null java.lang.NullPointerException: Cannot invoke "Calendar.CalendarBot.entities.Event.setMonth(int)" because the return value of "java.util.HashMap.get(Object)" is null
+2024-04-01 16:35:26 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from Алексей 5178356576 
+2024-04-01 16:35:29 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:35:29 Calendar.CalendarBot.body.TelegramBotBody INFO CallbackQuery received from 5178356576 
+2024-04-01 16:38:23 Calendar.CalendarBot.body.TelegramBotBody INFO text message received from lizok 456747315 
+2024-04-01 16:38:44 Calendar.CalendarBot.body.TelegramBotBody ERROR Sending message in TextMessageHandler error: org.telegram.telegrambots.meta.exceptions.TelegramApiException: Unable to execute sendmessage method
