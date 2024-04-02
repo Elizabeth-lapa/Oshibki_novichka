@@ -40,6 +40,12 @@ public class TelegramBotBody extends TelegramLongPollingBot {
         callbackQueryHandler = new CallbackQueryHandler(usersIvents,this, usersLastMessages, usersEventInMemory);
         messageHandler = new MessageHandler(usersIvents, this, usersLastMessages, usersEventInMemory);
         logger = org.slf4j.LoggerFactory.getLogger(TelegramBotBody.class);
+        try {
+            PostgresDBAdapter.createTable();
+        } catch (SQLException e) {
+            logger.error("Невозможно создать таблицу в базе данных");
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public String getBotUsername() {
